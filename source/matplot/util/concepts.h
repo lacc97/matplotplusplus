@@ -90,18 +90,17 @@ namespace matplot {
     template <typename T>
     using Iterable = TypeConcept<T, is_iterable_v<std::decay_t<T>>>;
 
-    // TypeConcept where C is true only if T is IterableValues
+    // TypeConcept where C is true only if T is Iterable1D
     template <typename T>
-    using IterableValues = TypeConcept<T, is_iterable_value_v<std::decay_t<T>>>;
+    using Iterable1D = TypeConcept<T, is_iterable_1d_v<std::decay_t<T>>>;
 
     // TypeConcept where C is true only if T is IterablePair
     template <typename T>
     using IterablePairs = TypeConcept<T, is_iterable_pair_v<std::decay_t<T>>>;
 
-    // TypeConcept where C is true only if T is IterableIterables
+    // TypeConcept where C is true only if T is Iterable2D
     template <typename T>
-    using IterableIterables =
-        TypeConcept<T, is_iterable_iterable_v<std::decay_t<T>>>;
+    using Iterable2D = TypeConcept<T, is_iterable_2d_v<std::decay_t<T>>>;
 
     // TypeConcept where C is true only if T is IterableValues
     template <typename T>

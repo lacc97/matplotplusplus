@@ -79,7 +79,7 @@ namespace matplot {
         class network &edge_labels(const std::vector<std::string> &edge_labels);
 
         template <class C>
-        network &edge_labels(const IterableValues<C> &e_labels) {
+        network &edge_labels(const Iterable1D<C> &e_labels) {
             std::vector<std::string> str_labels;
             std::stringstream ss;
             for (const auto &edge_label : e_labels) {
@@ -95,7 +95,7 @@ namespace matplot {
         class network &node_labels(const std::vector<std::string> &node_labels);
 
         template <class C>
-        network &node_labels(const IterableValues<C> &e_labels) {
+        network &node_labels(const Iterable1D<C> &e_labels) {
             std::vector<std::string> str_labels;
             std::stringstream ss;
             for (const auto &edge_label : e_labels) {

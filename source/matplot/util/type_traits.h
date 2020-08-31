@@ -97,19 +97,19 @@ namespace matplot {
 
     // Something like std::vector<double>
     template <class C>
-    using is_iterable_value =
+    using is_iterable_1d =
         std::bool_constant<is_iterable_v<C> && !has_iterable_value_type_v<C>>;
 
     template <typename C>
-    constexpr bool is_iterable_value_v = is_iterable_value<C>::value;
+    constexpr bool is_iterable_1d_v = is_iterable_1d<C>::value;
 
     // Something like std::vector<std::vector<double>>
     template <class C>
-    using is_iterable_iterable =
+    using is_iterable_2d =
         std::bool_constant<is_iterable_v<C> && has_iterable_value_type_v<C>>;
 
     template <typename C>
-    constexpr bool is_iterable_iterable_v = is_iterable_iterable<C>::value;
+    constexpr bool is_iterable_2d_v = is_iterable_2d<C>::value;
 
     template <class T>
     using is_string =

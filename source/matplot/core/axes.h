@@ -1720,159 +1720,159 @@ namespace matplot {
                 std::vector<double> */
           :
         template <class T1, class T2>
-        line_handle plot(const IterableValues<T1> &x,
-                         const IterableValues<T2> &y,
+        line_handle plot(const Iterable1D<T1> &x,
+                         const Iterable1D<T2> &y,
                          const std::string &line_spec = "") {
             return plot(to_vector_1d(x), to_vector_1d(y), line_spec);
         }
 
         template <class T1>
-        line_handle plot(const IterableValues<T1> &y,
+        line_handle plot(const Iterable1D<T1> &y,
                          const std::string &line_spec = "") {
             return plot(to_vector_1d(y), line_spec);
         }
 
         template <class T1, class T2, class... Args>
-        auto plot(const IterableValues<T1> &x, const IterableValues<T2> &y,
+        auto plot(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
                   const std::string &line_spec, Args... args) {
             return plot(to_vector_1d(x), to_vector_1d(y), line_spec, args...);
         }
 
         template <class T1, class T2, class T3, class... Args>
-        auto plot(const IterableValues<T1> &x, const IterableValues<T2> &y,
-                  const IterableValues<T3> &x2, Args... args) {
+        auto plot(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+                  const Iterable1D<T3> &x2, Args... args) {
             return plot(to_vector_1d(x), to_vector_1d(y), to_vector_1d(x2),
                         args...);
         }
 
         template <class T1, class... Args>
-        auto plot(const IterableValues<T1> &y, const std::string &line_spec,
+        auto plot(const Iterable1D<T1> &y, const std::string &line_spec,
                   Args... args) {
             return plot(to_vector_1d(y), line_spec, args...);
         }
 
         template <class T1, class T2>
-        std::vector<line_handle> plot(const IterableValues<T1> &x,
-                                      const IterableIterables<T2> &Y,
+        std::vector<line_handle> plot(const Iterable1D<T1> &x,
+                                      const Iterable2D<T2> &Y,
                                       const std::string &line_spec = "") {
             return plot(to_vector_1d(x), to_vector_2d(Y), line_spec);
         }
 
         template <class T1>
-        std::vector<line_handle> plot(const IterableIterables<T1> &Y,
+        std::vector<line_handle> plot(const Iterable2D<T1> &Y,
                                       const std::string &line_spec = "") {
             return plot(to_vector_2d(Y), line_spec);
         }
 
         template <class T1>
         std::vector<line_handle>
-        rgbplot(const IterableIterables<T1> &colormap) {
+        rgbplot(const Iterable2D<T1> &colormap) {
             return rgbplot(to_vector_2d(colormap));
         }
 
         template <class T1, class T2, class T3>
         line_handle
-        plot3(const IterableValues<T1> &x, const IterableValues<T2> &y,
-              const IterableValues<T3> &z, const std::string &line_spec = "") {
+        plot3(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+              const Iterable1D<T3> &z, const std::string &line_spec = "") {
             return plot3(to_vector_1d(x), to_vector_1d(y), to_vector_1d(z),
                          line_spec);
         }
 
         template <class T1, class T2, class T3>
-        std::enable_if_t<is_iterable_value_v<T3>, std::vector<line_handle>>
-        plot3(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
-              const IterableValues<T3> &z, const std::string &line_spec = "") {
+        std::enable_if_t<is_iterable_1d_v<T3>, std::vector<line_handle>>
+        plot3(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
+              const Iterable1D<T3> &z, const std::string &line_spec = "") {
             return plot3(to_vector_2d(X), to_vector_2d(Y), to_vector_1d(z),
                          line_spec);
         }
 
         template <class T1, class T2, class T3>
-        std::enable_if_t<is_iterable_iterable_v<T3>, std::vector<line_handle>>
-        plot3(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
-              const IterableIterables<T3> &Z,
+        std::enable_if_t<is_iterable_2d_v<T3>, std::vector<line_handle>>
+        plot3(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
+              const Iterable2D<T3> &Z,
               const std::string &line_spec = "") {
             return plot3(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                          line_spec);
         }
 
         template <class T1, class T2, class T3, class... Args>
-        auto plot3(const IterableValues<T1> &x, const IterableValues<T2> &y,
-                   const IterableValues<T3> &z, const std::string &line_spec,
+        auto plot3(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+                   const Iterable1D<T3> &z, const std::string &line_spec,
                    Args... args) {
             return plot3(to_vector_1d(x), to_vector_1d(y), to_vector_1d(z),
                          line_spec, args...);
         }
 
         template <class T1, class T2, class T3, class T4, class... Args>
-        auto plot3(const IterableValues<T1> &x, const IterableValues<T2> &y,
-                   const IterableValues<T3> &z, const IterableValues<T4> &x2,
+        auto plot3(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+                   const Iterable1D<T3> &z, const Iterable1D<T4> &x2,
                    Args... args) {
             return plot3(to_vector_1d(x), to_vector_1d(y), to_vector_1d(z),
                          to_vector_1d(x2), args...);
         }
 
         template <class T1, class... Args>
-        auto plot3(const IterableValues<T1> &z, const std::string &line_spec,
+        auto plot3(const Iterable1D<T1> &z, const std::string &line_spec,
                    Args... args) {
             return plot3(to_vector_1d(z), line_spec, args...);
         }
 
         template <class T1, class T2>
-        stair_handle stairs(const IterableValues<T1> &x,
-                            const IterableValues<T2> &y,
+        stair_handle stairs(const Iterable1D<T1> &x,
+                            const Iterable1D<T2> &y,
                             const std::string &line_spec = "") {
             return stairs(to_vector_1d(x), to_vector_1d(y), line_spec);
         }
 
         template <class T1>
-        stair_handle stairs(const IterableValues<T1> &y,
+        stair_handle stairs(const Iterable1D<T1> &y,
                             const std::string &line_spec = "") {
             return stairs(to_vector_1d(y), line_spec);
         }
 
         template <class T1, class T2>
-        std::enable_if_t<is_iterable_value_v<T1>, std::vector<stair_handle>>
-        stairs(const IterableValues<T1> &x, const IterableIterables<T2> &Y,
+        std::enable_if_t<is_iterable_1d_v<T1>, std::vector<stair_handle>>
+        stairs(const Iterable1D<T1> &x, const Iterable2D<T2> &Y,
                const std::string &line_spec = "") {
             return stairs(to_vector_1d(x), to_vector_2d(Y), line_spec);
         }
 
         template <class T1, class T2>
-        std::enable_if_t<is_iterable_iterable_v<T1>, std::vector<stair_handle>>
-        stairs(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
+        std::enable_if_t<is_iterable_2d_v<T1>, std::vector<stair_handle>>
+        stairs(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
                const std::string &line_spec = "") {
             return stairs(to_vector_2d(X), to_vector_2d(Y), line_spec);
         }
 
         template <class T1>
-        std::vector<stair_handle> stairs(const IterableIterables<T1> &Y,
+        std::vector<stair_handle> stairs(const Iterable2D<T1> &Y,
                                          const std::string &line_spec = "") {
             return stairs(to_vector_2d(Y), line_spec);
         }
 
         template <class T1, class T2, class... Args>
-        auto stairs(const IterableValues<T1> &x, const IterableValues<T2> &y,
+        auto stairs(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
                     const std::string &line_spec, Args... args) {
             return stairs(to_vector_1d(x), to_vector_1d(y), line_spec, args...);
         }
 
         template <class T1, class T2, class T3, class... Args>
-        auto stairs(const IterableValues<T1> &x, const IterableValues<T2> &y,
-                    const IterableValues<T3> &x2, Args... args) {
+        auto stairs(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+                    const Iterable1D<T3> &x2, Args... args) {
             return stairs(to_vector_1d(x), to_vector_1d(y), to_vector_1d(x2),
                           args...);
         }
 
         template <class T1, class... Args>
-        auto stairs(const IterableValues<T1> &y, const std::string &line_spec,
+        auto stairs(const Iterable1D<T1> &y, const std::string &line_spec,
                     Args... args) {
             return stairs(to_vector_1d(y), line_spec, args...);
         }
 
         template <class T1, class T2, class T3>
         error_bar_handle
-        errorbar(const IterableValues<T1> &x, const IterableValues<T2> &y,
-                 const IterableValues<T3> &error,
+        errorbar(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+                 const Iterable1D<T3> &error,
                  error_bar::type type = error_bar::type::vertical,
                  const std::string &line_spec = "") {
             return errorbar(to_vector_1d(x), to_vector_1d(y),
@@ -1880,12 +1880,12 @@ namespace matplot {
         }
 
         template <class T1, class T2, class T3, class T4, class T5, class T6>
-        error_bar_handle errorbar(const IterableValues<T1> &x,
-                                  const IterableValues<T2> &y,
-                                  const IterableValues<T3> &y_neg_delta,
-                                  const IterableValues<T4> &y_pos_delta,
-                                  const IterableValues<T5> &x_neg_delta,
-                                  const IterableValues<T6> &x_pos_delta,
+        error_bar_handle errorbar(const Iterable1D<T1> &x,
+                                  const Iterable1D<T2> &y,
+                                  const Iterable1D<T3> &y_neg_delta,
+                                  const Iterable1D<T4> &y_pos_delta,
+                                  const Iterable1D<T5> &x_neg_delta,
+                                  const Iterable1D<T6> &x_pos_delta,
                                   const std::string &line_spec = "") {
             return errorbar(
                 to_vector_1d(x), to_vector_1d(y), to_vector_1d(y_neg_delta),
@@ -1894,9 +1894,9 @@ namespace matplot {
         }
 
         template <class T1, class T2, class T3>
-        error_bar_handle errorbar(const IterableValues<T1> &x,
-                                  const IterableValues<T2> &y,
-                                  const IterableValues<T3> &y_error,
+        error_bar_handle errorbar(const Iterable1D<T1> &x,
+                                  const Iterable1D<T2> &y,
+                                  const Iterable1D<T3> &y_error,
                                   const std::string &line_spec) {
             return errorbar(to_vector_1d(x), to_vector_1d(y),
                             to_vector_1d(y_error), line_spec);
@@ -1904,7 +1904,7 @@ namespace matplot {
 
         template <class T1, class T2>
         std::vector<filled_area_handle>
-        area(const IterableValues<T1> &x, const IterableIterables<T2> &Y,
+        area(const Iterable1D<T1> &x, const Iterable2D<T2> &Y,
              double base_value = 0., bool stacked = true,
              const std::string &line_spec = "k-") {
             return area(to_vector_1d(x), to_vector_2d(Y), base_value, stacked,
@@ -1912,8 +1912,8 @@ namespace matplot {
         }
 
         template <class T1, class T2>
-        filled_area_handle area(const IterableValues<T1> &x,
-                                const IterableValues<T2> &y,
+        filled_area_handle area(const Iterable1D<T1> &x,
+                                const Iterable1D<T2> &y,
                                 double base_value = 0., bool stacked = true,
                                 const std::string &line_spec = "k-") {
             return area(to_vector_1d(x), to_vector_1d(y), base_value, stacked,
@@ -1922,27 +1922,27 @@ namespace matplot {
 
         template <class T1>
         std::vector<filled_area_handle>
-        area(const IterableIterables<T1> &Y, double base_value = 0.,
+        area(const Iterable2D<T1> &Y, double base_value = 0.,
              bool stacked = true, const std::string &line_spec = "k-") {
             return area(to_vector_2d(Y), base_value, stacked, line_spec);
         }
 
         template <class T1>
         std::vector<filled_area_handle>
-        area(const IterableIterables<T1> &Y, bool stacked,
+        area(const Iterable2D<T1> &Y, bool stacked,
              const std::string &line_spec = "k-") {
             return area(to_vector_2d(Y), stacked, line_spec);
         }
 
         template <class T1>
-        filled_area_handle area(const IterableValues<T1> &y,
+        filled_area_handle area(const Iterable1D<T1> &y,
                                 double base_value = 0., bool stacked = true,
                                 const std::string &line_spec = "k-") {
             return area(to_vector_1d(y), base_value, stacked, line_spec);
         }
 
         template <class T1>
-        histogram_handle hist(const IterableValues<T1> &data,
+        histogram_handle hist(const Iterable1D<T1> &data,
                               histogram::binning_algorithm algorithm =
                                   histogram::binning_algorithm::automatic,
                               enum histogram::normalization normalization_alg =
@@ -1951,27 +1951,27 @@ namespace matplot {
         }
 
         template <class T1>
-        histogram_handle hist(const IterableValues<T1> &data, size_t n_bins) {
+        histogram_handle hist(const Iterable1D<T1> &data, size_t n_bins) {
             return hist(to_vector_1d(data), n_bins);
         }
 
         template <class T1, class T2>
-        histogram_handle hist(const IterableValues<T1> &data,
-                              const IterableValues<T2> &edges) {
+        histogram_handle hist(const Iterable1D<T1> &data,
+                              const Iterable1D<T2> &edges) {
             return hist(to_vector_1d(data), to_vector_1d(edges));
         }
 
         template <class T1>
-        histogram_handle hist(const IterableValues<T1> &data,
+        histogram_handle hist(const Iterable1D<T1> &data,
                               enum histogram::normalization normalization_alg) {
             return hist(to_vector_1d(data), normalization_alg);
         }
 
         template <class T1, class T2, class T3, class T4>
         axes_object_handle binscatter(
-            const IterableValues<T1> &x, const IterableValues<T2> &y,
-            const IterableValues<T3> &edges_x,
-            const IterableValues<T4> &edges_y,
+            const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+            const Iterable1D<T3> &edges_x,
+            const Iterable1D<T4> &edges_y,
             enum bin_scatter_style scatter_style = bin_scatter_style::automatic,
             enum histogram::normalization normalization_alg =
                 histogram::normalization::count) {
@@ -1982,7 +1982,7 @@ namespace matplot {
 
         template <class T1, class T2>
         axes_object_handle binscatter(
-            const IterableValues<T1> &x, const IterableValues<T2> &y,
+            const Iterable1D<T1> &x, const Iterable1D<T2> &y,
             histogram::binning_algorithm algorithm =
                 histogram::binning_algorithm::automatic,
             enum bin_scatter_style scatter_style = bin_scatter_style::automatic,
@@ -1994,7 +1994,7 @@ namespace matplot {
 
         template <class T1, class T2>
         axes_object_handle
-        binscatter(const IterableValues<T1> &x, const IterableValues<T2> &y,
+        binscatter(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
                    enum bin_scatter_style scatter_style,
                    histogram::binning_algorithm algorithm =
                        histogram::binning_algorithm::automatic,
@@ -2006,7 +2006,7 @@ namespace matplot {
 
         template <class T1, class T2>
         axes_object_handle binscatter(
-            const IterableValues<T1> &x, const IterableValues<T2> &y,
+            const Iterable1D<T1> &x, const Iterable1D<T2> &y,
             size_t nbins_x, size_t nbins_y,
             enum bin_scatter_style scatter_style = bin_scatter_style::automatic,
             enum histogram::normalization normalization_alg =
@@ -2016,129 +2016,129 @@ namespace matplot {
         }
 
         template <class T1>
-        std::enable_if_t<is_iterable_value_v<T1>, box_chart_handle>
-        boxplot(const IterableValues<T1> &data) {
+        std::enable_if_t<is_iterable_1d_v<T1>, box_chart_handle>
+        boxplot(const Iterable1D<T1> &data) {
             return boxplot(to_vector_1d(data));
         }
 
         template <class T1>
-        std::enable_if_t<is_iterable_iterable_v<T1>, box_chart_handle>
-        boxplot(const IterableIterables<T1> &data) {
+        std::enable_if_t<is_iterable_2d_v<T1>, box_chart_handle>
+        boxplot(const Iterable2D<T1> &data) {
             return boxplot(to_vector_2d(data));
         }
 
         template <class T1, class T2>
-        box_chart_handle boxplot(const IterableValues<T1> &data,
-                                 const IterableValues<T2> &groups) {
+        box_chart_handle boxplot(const Iterable1D<T1> &data,
+                                 const Iterable1D<T2> &groups) {
             return boxplot(to_vector_1d(data), to_vector_1d(groups));
         }
 
         template <class T1>
-        box_chart_handle boxplot(const IterableValues<T1> &y_data,
+        box_chart_handle boxplot(const Iterable1D<T1> &y_data,
                                  const std::vector<std::string> &groups) {
             return boxplot(to_vector_1d(y_data), groups);
         }
 
         template <class T1, class T2>
-        std::enable_if_t<is_iterable_value_v<T2>, bars_handle>
-        bar(const IterableValues<T1> &x, const IterableValues<T2> &y) {
+        std::enable_if_t<is_iterable_1d_v<T2>, bars_handle>
+        bar(const Iterable1D<T1> &x, const Iterable1D<T2> &y) {
             return bar(to_vector_1d(x), to_vector_1d(y));
         }
 
         template <class T1>
-        std::enable_if_t<is_iterable_value_v<T1>, bars_handle>
-        bar(const IterableValues<T1> &y) {
+        std::enable_if_t<is_iterable_1d_v<T1>, bars_handle>
+        bar(const Iterable1D<T1> &y) {
             return bar(to_vector_1d(y));
         }
 
         template <class T1>
-        std::enable_if_t<is_iterable_iterable_v<T1>, bars_handle>
-        bar(const IterableIterables<T1> &Y) {
+        std::enable_if_t<is_iterable_2d_v<T1>, bars_handle>
+        bar(const Iterable2D<T1> &Y) {
             return bar(to_vector_2d(Y));
         }
 
         template <class T1, class T2>
-        std::enable_if_t<is_iterable_iterable_v<T2>, bars_handle>
-        bar(const IterableValues<T1> &x, const IterableIterables<T2> &Y) {
+        std::enable_if_t<is_iterable_2d_v<T2>, bars_handle>
+        bar(const Iterable1D<T1> &x, const Iterable2D<T2> &Y) {
             return bar(to_vector_1d(x), to_vector_2d(Y));
         }
 
         template <class T1>
-        bars_handle bar(const IterableValues<T1> &y, double width) {
+        bars_handle bar(const Iterable1D<T1> &y, double width) {
             return bar(to_vector_1d(y), width);
         }
 
         template <class T1>
-        std::vector<bars_handle> barstacked(const IterableIterables<T1> &Y) {
+        std::vector<bars_handle> barstacked(const Iterable2D<T1> &Y) {
             return barstacked(to_vector_2d(Y));
         }
 
         template <class T1, class T2>
-        std::vector<bars_handle> barstacked(const IterableValues<T1> &x,
-                                            const IterableIterables<T2> &Y) {
+        std::vector<bars_handle> barstacked(const Iterable1D<T1> &x,
+                                            const Iterable2D<T2> &Y) {
             return barstacked(to_vector_1d(x), to_vector_2d(Y));
         }
 
         template <class T1>
-        matrix_handle heatmap(const IterableIterables<T1> &m) {
+        matrix_handle heatmap(const Iterable2D<T1> &m) {
             return heatmap(to_vector_2d(m));
         }
 
         template <class T1>
-        matrix_handle pcolor(const IterableIterables<T1> &m) {
+        matrix_handle pcolor(const Iterable2D<T1> &m) {
             return pcolor(to_vector_2d(m));
         }
 
         template <class T1, class T2>
-        parallel_lines_handle parallelplot(const IterableIterables<T1> &X,
-                                           const IterableValues<T2> &colors,
+        parallel_lines_handle parallelplot(const Iterable2D<T1> &X,
+                                           const Iterable1D<T2> &colors,
                                            const std::string &line_spec = "") {
             return parallelplot(to_vector_2d(X), to_vector_1d(colors),
                                 line_spec);
         }
 
         template <class T1>
-        parallel_lines_handle parallelplot(const IterableIterables<T1> &X,
+        parallel_lines_handle parallelplot(const Iterable2D<T1> &X,
                                            const std::string &line_spec = "") {
             return parallelplot(to_vector_2d(X), line_spec);
         }
 
         template <class T1, class T2>
-        circles_handle pie(const IterableValues<T1> &x,
-                           const IterableValues<T2> &explode = {},
+        circles_handle pie(const Iterable1D<T1> &x,
+                           const Iterable1D<T2> &explode = {},
                            const std::vector<std::string> &labels = {}) {
             return pie(to_vector_1d(x), to_vector_1d(explode), labels);
         }
 
         template <class T1, class T2>
-        circles_handle pie(const IterableValues<T1> &x,
+        circles_handle pie(const Iterable1D<T1> &x,
                            const std::vector<std::string> &labels) {
             return pie(to_vector_1d(x), labels);
         }
 
         template <class T1, class T2, class T3, class T4>
-        line_handle scatter(const IterableValues<T1> &x,
-                            const IterableValues<T2> &y,
-                            const IterableValues<T3> &sizes = {},
-                            const IterableValues<T4> &colors = {}) {
+        line_handle scatter(const Iterable1D<T1> &x,
+                            const Iterable1D<T2> &y,
+                            const Iterable1D<T3> &sizes = {},
+                            const Iterable1D<T4> &colors = {}) {
             return scatter(to_vector_1d(x), to_vector_1d(y),
                            to_vector_1d(sizes), to_vector_1d(colors));
         }
 
         template <class T1, class T2, class T3>
-        line_handle scatter(const IterableValues<T1> &x,
-                            const IterableValues<T2> &y, double sizes,
-                            const IterableValues<T3> &colors = {}) {
+        line_handle scatter(const Iterable1D<T1> &x,
+                            const Iterable1D<T2> &y, double sizes,
+                            const Iterable1D<T3> &colors = {}) {
             return scatter(to_vector_1d(x), to_vector_1d(y), sizes,
                            to_vector_1d(colors));
         }
 
         template <class T1, class T2, class T3, class T4, class T5>
-        line_handle scatter3(const IterableValues<T1> &x,
-                             const IterableValues<T2> &y,
-                             const IterableValues<T3> &z,
-                             const IterableValues<T4> &sizes = {},
-                             const IterableValues<T5> &colors = {},
+        line_handle scatter3(const Iterable1D<T1> &x,
+                             const Iterable1D<T2> &y,
+                             const Iterable1D<T3> &z,
+                             const Iterable1D<T4> &sizes = {},
+                             const Iterable1D<T5> &colors = {},
                              const std::string &line_spec = "o") {
             return scatter3(to_vector_1d(x), to_vector_1d(y), to_vector_1d(z),
                             to_vector_1d(sizes), to_vector_1d(colors),
@@ -2147,16 +2147,16 @@ namespace matplot {
 
         template <class T1, class T2, class T3>
         line_handle
-        scatter3(const IterableValues<T1> &x, const IterableValues<T2> &y,
-                 const IterableValues<T3> &z, const std::string &line_spec) {
+        scatter3(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+                 const Iterable1D<T3> &z, const std::string &line_spec) {
             return scatter3(to_vector_1d(x), to_vector_1d(y), to_vector_1d(z),
                             line_spec);
         }
 
         template <class T1, class T2>
         labels_handle wordcloud(const std::vector<std::string> &words,
-                                const IterableValues<T1> &sizes,
-                                const IterableValues<T2> &custom_colors = {}) {
+                                const Iterable1D<T1> &sizes,
+                                const Iterable1D<T2> &custom_colors = {}) {
             return wordcloud(words, to_vector_1d(sizes),
                              to_vector_1d(custom_colors));
         }
@@ -2167,136 +2167,136 @@ namespace matplot {
                   const std::vector<std::string> &black_list,
                   const std::string &delimiters = " ',\n\r\t\".!?:;",
                   size_t max_cloud_size = 100,
-                  const IterableValues<T1> &custom_colors = {}) {
+                  const Iterable1D<T1> &custom_colors = {}) {
             return wordcloud(text, black_list, delimiters, max_cloud_size,
                              to_vector_1d(custom_colors));
         }
 
         template <class T1>
         std::pair<bars_handle, line_handle>
-        pareto(const IterableValues<T1> &y,
+        pareto(const Iterable1D<T1> &y,
                const std::vector<std::string> &names = {},
                double p_threshold = 0.95, size_t item_threshold = 10) {
             return pareto(to_vector_1d(y), names, p_threshold, item_threshold);
         }
 
         template <class T1, class T2>
-        line_handle stem(const IterableValues<T1> &x,
-                         const IterableValues<T2> &y,
+        line_handle stem(const Iterable1D<T1> &x,
+                         const Iterable1D<T2> &y,
                          const std::string &line_spec = "-o") {
             return stem(to_vector_1d(x), to_vector_1d(y), line_spec);
         }
 
         template <class T1>
-        line_handle stem(const IterableValues<T1> &y,
+        line_handle stem(const Iterable1D<T1> &y,
                          const std::string &line_spec = "-o") {
             return stem(to_vector_1d(y), line_spec);
         }
 
         template <class T1, class T2>
-        std::vector<line_handle> stem(const IterableValues<T1> &x,
-                                      const IterableIterables<T2> &Y,
+        std::vector<line_handle> stem(const Iterable1D<T1> &x,
+                                      const Iterable2D<T2> &Y,
                                       const std::string &line_spec = "-o") {
             return stem(to_vector_1d(x), to_vector_2d(Y), line_spec);
         }
 
         template <class T1>
-        std::vector<line_handle> stem(const IterableIterables<T1> &Y,
+        std::vector<line_handle> stem(const Iterable2D<T1> &Y,
                                       const std::string &line_spec = "-o") {
             return stem(to_vector_2d(Y), line_spec);
         }
 
         template <class T1, class T2, class T3>
-        line_handle stem3(const IterableValues<T1> &x,
-                          const IterableValues<T2> &y,
-                          const IterableValues<T3> &z,
+        line_handle stem3(const Iterable1D<T1> &x,
+                          const Iterable1D<T2> &y,
+                          const Iterable1D<T3> &z,
                           const std::string &line_spec = "-o") {
             return stem3(to_vector_1d(x), to_vector_1d(y), to_vector_1d(z),
                          line_spec);
         }
 
         template <class T1, class T2, class T3>
-        std::vector<line_handle> stem3(const IterableIterables<T1> &X,
-                                       const IterableIterables<T2> &Y,
-                                       const IterableValues<T3> &z,
+        std::vector<line_handle> stem3(const Iterable2D<T1> &X,
+                                       const Iterable2D<T2> &Y,
+                                       const Iterable1D<T3> &z,
                                        const std::string &line_spec = "-o") {
             return stem3(to_vector_2d(X), to_vector_2d(Y), to_vector_1d(z),
                          line_spec);
         }
 
         template <class T1>
-        line_handle stem3(const IterableValues<T1> &z,
+        line_handle stem3(const Iterable1D<T1> &z,
                           const std::string &line_spec = "-o") {
             return stem3(to_vector_1d(z), line_spec);
         }
 
         template <class T1, class T2>
-        line_handle stem3(const IterableIterables<T1> &Z,
+        line_handle stem3(const Iterable2D<T1> &Z,
                           const std::string &line_spec = "-o") {
             return stem3(to_vector_2d(Z), line_spec);
         }
 
         template <class T1, class T2, class T3, class T4>
-        circles_handle geobubble(const IterableValues<T1> &latitude,
-                                 const IterableValues<T2> &longitude,
-                                 const IterableValues<T3> &sizes = {},
-                                 const IterableValues<T4> &colors = {}) {
+        circles_handle geobubble(const Iterable1D<T1> &latitude,
+                                 const Iterable1D<T2> &longitude,
+                                 const Iterable1D<T3> &sizes = {},
+                                 const Iterable1D<T4> &colors = {}) {
             return geobubble(to_vector_1d(latitude), to_vector_1d(longitude),
                              to_vector_1d(sizes), to_vector_1d(colors));
         }
 
         template <class T1, class T2, class T3>
-        line_handle geodensityplot(const IterableValues<T1> &latitude,
-                                   const IterableValues<T2> &longitude,
-                                   const IterableValues<T3> &weights = {}) {
+        line_handle geodensityplot(const Iterable1D<T1> &latitude,
+                                   const Iterable1D<T2> &longitude,
+                                   const Iterable1D<T3> &weights = {}) {
             return geodensityplot(to_vector_1d(latitude),
                                   to_vector_1d(longitude),
                                   to_vector_1d(weights));
         }
 
         template <class T1, class T2>
-        line_handle geoplot(const IterableValues<T1> &latitude,
-                            const IterableValues<T2> &longitude,
+        line_handle geoplot(const Iterable1D<T1> &latitude,
+                            const Iterable1D<T2> &longitude,
                             const std::string &line_spec = "") {
             return geoplot(to_vector_1d(latitude), to_vector_1d(longitude),
                            line_spec);
         }
 
         template <class T1, class T2, class T3, class T4>
-        line_handle geoscatter(const IterableValues<T1> &latitude,
-                               const IterableValues<T2> &longitude,
-                               const IterableValues<T3> &sizes = {},
-                               const IterableValues<T4> &colors = {}) {
+        line_handle geoscatter(const Iterable1D<T1> &latitude,
+                               const Iterable1D<T2> &longitude,
+                               const Iterable1D<T3> &sizes = {},
+                               const Iterable1D<T4> &colors = {}) {
             return geoscatter(to_vector_1d(latitude), to_vector_1d(longitude),
                               to_vector_1d(sizes), to_vector_1d(colors));
         }
 
         template <class T1, class T2>
-        vectors_handle compass(const IterableValues<T1> &x,
-                               const IterableValues<T2> &y,
+        vectors_handle compass(const Iterable1D<T1> &x,
+                               const Iterable1D<T2> &y,
                                const std::string &line_spec = "") {
             return compass(to_vector_1d(x), to_vector_1d(y), line_spec);
         }
 
         template <class T1>
-        histogram_handle polarhistogram(const IterableValues<T1> &theta,
+        histogram_handle polarhistogram(const Iterable1D<T1> &theta,
                                         size_t nbins) {
             return polarhistogram(to_vector_1d(theta), nbins);
         }
 
         template <class T1, class T2>
-        line_handle polarplot(const IterableValues<T1> &theta,
-                              const IterableValues<T2> &rho,
+        line_handle polarplot(const Iterable1D<T1> &theta,
+                              const Iterable1D<T2> &rho,
                               const std::string &line_spec = "") {
             return polarplot(to_vector_1d(theta), to_vector_1d(rho), line_spec);
         }
 
         template <class T1, class T2, class T3, class T4>
         line_handle
-        polarscatter(const IterableValues<T1> &theta,
-                     const IterableValues<T2> &rho,
-                     const IterableValues<T3> &sizes = std::vector<double>{},
-                     const IterableValues<T4> &colors = std::vector<double>{},
+        polarscatter(const Iterable1D<T1> &theta,
+                     const Iterable1D<T2> &rho,
+                     const Iterable1D<T3> &sizes = std::vector<double>{},
+                     const Iterable1D<T4> &colors = std::vector<double>{},
                      const std::string &line_spec = "o") {
             return polarscatter(to_vector_1d(theta), to_vector_1d(rho),
                                 to_vector_1d(sizes), to_vector_1d(colors),
@@ -2304,16 +2304,16 @@ namespace matplot {
         }
 
         template <class T1, class T2>
-        line_handle polarscatter(const IterableValues<T1> &theta,
-                                 const IterableValues<T2> &rho, double size,
+        line_handle polarscatter(const Iterable1D<T1> &theta,
+                                 const Iterable1D<T2> &rho, double size,
                                  const std::string &line_spec = "o") {
             return polarscatter(to_vector_1d(theta), to_vector_1d(rho), size,
                                 line_spec);
         }
 
         template <class T1, class T2>
-        line_handle polarscatter(const IterableValues<T1> &theta,
-                                 const IterableValues<T2> &rho,
+        line_handle polarscatter(const Iterable1D<T1> &theta,
+                                 const Iterable1D<T2> &rho,
                                  const std::string &line_spec) {
             return polarscatter(to_vector_1d(theta), to_vector_1d(rho), size,
                                 line_spec);
@@ -2321,9 +2321,9 @@ namespace matplot {
 
         template <class T1, class T2, class T3, class T4>
         contours_handle
-        contour(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
-                const IterableIterables<T3> &Z,
-                const IterableValues<T4> &levels,
+        contour(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
+                const Iterable2D<T3> &Z,
+                const Iterable1D<T4> &levels,
                 const std::string &line_spec = "", size_t n_levels = 0) {
             return contour(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                            to_vector_1d(levels), line_spec, n_levels);
@@ -2331,8 +2331,8 @@ namespace matplot {
 
         template <class T1, class T2, class T3>
         contours_handle
-        contour(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
-                const IterableIterables<T3> &Z, size_t n_levels = 0,
+        contour(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
+                const Iterable2D<T3> &Z, size_t n_levels = 0,
                 const std::string &line_spec = "") {
             return contour(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                            n_levels, line_spec);
@@ -2340,17 +2340,17 @@ namespace matplot {
 
         template <class T1, class T2, class T3>
         contours_handle
-        contour(const IterableIterables<T1> &X, const IterableIterables<T1> &Y,
-                const IterableIterables<T1> &Z, const std::string &line_spec) {
+        contour(const Iterable2D<T1> &X, const Iterable2D<T1> &Y,
+                const Iterable2D<T1> &Z, const std::string &line_spec) {
             return contour(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                            line_spec);
         }
 
         template <class T1, class T2, class T3, class T4>
         contours_handle
-        contourf(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
-                 const IterableIterables<T3> &Z,
-                 const IterableValues<T4> &levels,
+        contourf(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
+                 const Iterable2D<T3> &Z,
+                 const Iterable1D<T4> &levels,
                  const std::string &line_spec = "", size_t n_levels = 0) {
             return contourf(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                             to_vector_1d(levels), line_spec, n_levels);
@@ -2358,8 +2358,8 @@ namespace matplot {
 
         template <class T1, class T2, class T3>
         contours_handle
-        contourf(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
-                 const IterableIterables<T3> &Z, size_t n_levels = 0,
+        contourf(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
+                 const Iterable2D<T3> &Z, size_t n_levels = 0,
                  const std::string &line_spec = "") {
             return contourf(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                             n_levels, line_spec);
@@ -2367,8 +2367,8 @@ namespace matplot {
 
         template <class T1, class T2, class T3>
         contours_handle
-        contourf(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
-                 const IterableIterables<T3> &Z, const std::string &line_spec) {
+        contourf(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
+                 const Iterable2D<T3> &Z, const std::string &line_spec) {
             return contourf(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                             line_spec);
         }
@@ -2376,7 +2376,7 @@ namespace matplot {
         template <class T1>
         contours_handle fcontour(fcontour_function_type fn,
                                  const std::array<double, 4> &xy_range,
-                                 IterableValues<T1> levels = {},
+                                 Iterable1D<T1> levels = {},
                                  const std::string &line_spec = "",
                                  size_t n_levels = 0) {
             return fcontour(fn, xy_range, to_vector_1d(levels), line_spec,
@@ -2384,44 +2384,42 @@ namespace matplot {
         }
 
         template <class T1, class T2>
-        vectors_handle feather(const IterableValues<T1> &u,
-                               const IterableValues<T2> &v,
+        vectors_handle feather(const Iterable1D<T1> &u,
+                               const Iterable1D<T2> &v,
                                const std::string &line_spec = "") {
             return feather(to_vector_1d(u), to_vector_1d(v), line_spec);
         }
 
         template <class T1, class T2, class T3, class T4>
-        std::enable_if_t<is_iterable_value_v<T1> && is_iterable_value_v<T2> &&
-                             is_iterable_value_v<T3> && is_iterable_value_v<T4>,
+        std::enable_if_t<is_iterable_1d_v<T1> && is_iterable_1d_v<T2> &&
+                             is_iterable_1d_v<T3> && is_iterable_1d_v<T4>,
                          vectors_handle>
-        quiver(const IterableValues<T1> &x, const IterableValues<T2> &y,
-               const IterableValues<T3> &u, const IterableValues<T4> &v,
+        quiver(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+               const Iterable1D<T3> &u, const Iterable1D<T4> &v,
                double scale = 1.0, const std::string &line_spec = "") {
             return quiver(to_vector_1d(x), to_vector_1d(y), to_vector_1d(u),
                           to_vector_1d(v), scale, line_spec);
         }
 
         template <class T1, class T2, class T3, class T4>
-        std::enable_if_t<
-            is_iterable_iterable_v<T1> && is_iterable_iterable_v<T2> &&
-                is_iterable_iterable_v<T3> && is_iterable_iterable_v<T4>,
+        std::enable_if_t<is_iterable_2d_v<T1> && is_iterable_2d_v<T2> &&
+                             is_iterable_2d_v<T3> && is_iterable_2d_v<T4>,
             vectors_handle>
-        quiver(const IterableIterables<T1> &x, const IterableIterables<T2> &y,
-               const IterableIterables<T3> &u, const IterableIterables<T4> &v,
+        quiver(const Iterable2D<T1> &x, const Iterable2D<T2> &y,
+               const Iterable2D<T3> &u, const Iterable2D<T4> &v,
                double scale = 1.0, const std::string &line_spec = "") {
             return quiver(to_vector_2d(x), to_vector_2d(y), to_vector_2d(u),
                           to_vector_2d(v), scale, line_spec);
         }
 
         template <class T1, class T2, class T3, class T4, class T5, class T6>
-        std::enable_if_t<is_iterable_value_v<T1> && is_iterable_value_v<T2> &&
-                             is_iterable_value_v<T3> &&
-                             is_iterable_value_v<T4> &&
-                             is_iterable_value_v<T5> && is_iterable_value_v<T6>,
+        std::enable_if_t<is_iterable_1d_v<T1> && is_iterable_1d_v<T2> &&
+                             is_iterable_1d_v<T3> && is_iterable_1d_v<T4> &&
+                             is_iterable_1d_v<T5> && is_iterable_1d_v<T6>,
                          vectors_handle>
-        quiver3(const IterableValues<T1> &x, const IterableValues<T2> &y,
-                const IterableValues<T3> &z, const IterableValues<T4> &u,
-                const IterableValues<T5> &v, const IterableValues<T6> &w,
+        quiver3(const Iterable1D<T1> &x, const Iterable1D<T2> &y,
+                const Iterable1D<T3> &z, const Iterable1D<T4> &u,
+                const Iterable1D<T5> &v, const Iterable1D<T6> &w,
                 double scale = 1.0, const std::string &line_spec = "") {
             return quiver3(to_vector_1d(x), to_vector_1d(y), to_vector_1d(z),
                            to_vector_1d(u), to_vector_1d(v), to_vector_1d(w),
@@ -2429,14 +2427,13 @@ namespace matplot {
         }
 
         template <class T1, class T2, class T3, class T4, class T5, class T6>
-        std::enable_if_t<
-            is_iterable_iterable_v<T1> && is_iterable_iterable_v<T2> &&
-                is_iterable_iterable_v<T3> && is_iterable_iterable_v<T4> &&
-                is_iterable_iterable_v<T5> && is_iterable_iterable_v<T6>,
+        std::enable_if_t<is_iterable_2d_v<T1> && is_iterable_2d_v<T2> &&
+                             is_iterable_2d_v<T3> && is_iterable_2d_v<T4> &&
+                             is_iterable_2d_v<T5> && is_iterable_2d_v<T6>,
             vectors_handle>
-        quiver3(const IterableIterables<T1> &x, const IterableIterables<T2> &y,
-                const IterableIterables<T3> &z, const IterableIterables<T4> &u,
-                const IterableIterables<T5> &v, const IterableIterables<T6> &w,
+        quiver3(const Iterable2D<T1> &x, const Iterable2D<T2> &y,
+                const Iterable2D<T3> &z, const Iterable2D<T4> &u,
+                const Iterable2D<T5> &v, const Iterable2D<T6> &w,
                 double scale = 1.0, const std::string &line_spec = "") {
             return quiver3(to_vector_2d(x), to_vector_2d(y), to_vector_2d(z),
                            to_vector_2d(u), to_vector_2d(v), to_vector_2d(w),
@@ -2445,89 +2442,89 @@ namespace matplot {
 
         template <class T1, class T2, class T3, class T4>
         vectors_handle
-        quiver3(const IterableIterables<T1> &z, const IterableIterables<T2> &u,
-                const IterableIterables<T3> &v, const IterableIterables<T4> &w,
+        quiver3(const Iterable2D<T1> &z, const Iterable2D<T2> &u,
+                const Iterable2D<T3> &v, const Iterable2D<T4> &w,
                 double scale = 1.0, const std::string &line_spec = "") {
             return quiver3(to_vector_2d(z), to_vector_2d(u), to_vector_2d(v),
                            to_vector_2d(w), scale, line_spec);
         }
 
         template <class T1, class T2, class T3, class T4>
-        surface_handle fence(const IterableIterables<T1> &X,
-                             const IterableIterables<T2> &Y,
-                             const IterableIterables<T3> &Z,
-                             const IterableValues<T4> &c = {}) {
+        surface_handle fence(const Iterable2D<T1> &X,
+                             const Iterable2D<T2> &Y,
+                             const Iterable2D<T3> &Z,
+                             const Iterable1D<T4> &c = {}) {
             return fence(to_vector_2d(X), to_vector_2d(X), to_vector_2d(X),
                          to_vector_1d(c));
         }
 
         template <class T1, class T2, class T3, class T4>
-        surface_handle mesh(const IterableIterables<T1> &X,
-                            const IterableIterables<T2> &Y,
-                            const IterableIterables<T3> &Z,
-                            const IterableIterables<T4> &C = {}) {
+        surface_handle mesh(const Iterable2D<T1> &X,
+                            const Iterable2D<T2> &Y,
+                            const Iterable2D<T3> &Z,
+                            const Iterable2D<T4> &C = {}) {
             return mesh(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                         to_vector_2d(C));
         }
 
         template <class T1, class T2, class T3, class T4>
-        surface_handle meshc(const IterableIterables<T1> &X,
-                             const IterableIterables<T2> &Y,
-                             const IterableIterables<T3> &Z,
-                             const IterableIterables<T4> &C = {}) {
+        surface_handle meshc(const Iterable2D<T1> &X,
+                             const Iterable2D<T2> &Y,
+                             const Iterable2D<T3> &Z,
+                             const Iterable2D<T4> &C = {}) {
             return meshc(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                          to_vector_2d(C));
         }
 
         template <class T1, class T2, class T3, class T4>
-        surface_handle meshz(const IterableIterables<T1> &X,
-                             const IterableIterables<T2> &Y,
-                             const IterableIterables<T3> &Z,
-                             const IterableIterables<T4> &C = {}) {
+        surface_handle meshz(const Iterable2D<T1> &X,
+                             const Iterable2D<T2> &Y,
+                             const Iterable2D<T3> &Z,
+                             const Iterable2D<T4> &C = {}) {
             return meshz(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                          to_vector_2d(C));
         }
 
         template <class T1, class T2, class T3, class T4>
         surface_handle
-        ribbon(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
-               const IterableIterables<T3> &Z,
-               const IterableIterables<T4> &C = {}, double width = 0.75) {
+        ribbon(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
+               const Iterable2D<T3> &Z,
+               const Iterable2D<T4> &C = {}, double width = 0.75) {
             return ribbon(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                           to_vector_2d(C), width);
         }
 
         template <class T1, class T2, class T3, class T4>
         surface_handle
-        surf(const IterableIterables<T1> &X, const IterableIterables<T2> &Y,
-             const IterableIterables<T3> &Z,
-             const IterableIterables<T4> &C = {}, std::string line_spec = "") {
-            return IterableIterables<T1>(to_vector_2d(X), to_vector_2d(Y),
+        surf(const Iterable2D<T1> &X, const Iterable2D<T2> &Y,
+             const Iterable2D<T3> &Z,
+             const Iterable2D<T4> &C = {}, std::string line_spec = "") {
+            return Iterable2D<T1>(to_vector_2d(X), to_vector_2d(Y),
                                          to_vector_2d(Z), to_vector_2d(C),
                                          line_spec);
         }
 
         template <class T1, class T2, class T3, class T4>
-        surface_handle surfc(const IterableIterables<T1> &X,
-                             const IterableIterables<T2> &Y,
-                             const IterableIterables<T3> &Z,
-                             const IterableIterables<T4> &C = {}) {
+        surface_handle surfc(const Iterable2D<T1> &X,
+                             const Iterable2D<T2> &Y,
+                             const Iterable2D<T3> &Z,
+                             const Iterable2D<T4> &C = {}) {
             return surfc(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                          to_vector_2d(C));
         }
 
         template <class T1, class T2, class T3, class T4>
-        surface_handle waterfall(const IterableIterables<T1> &X,
-                                 const IterableIterables<T2> &Y,
-                                 const IterableIterables<T3> &Z,
-                                 const IterableIterables<T4> &C = {}) {
+        surface_handle waterfall(const Iterable2D<T1> &X,
+                                 const Iterable2D<T2> &Y,
+                                 const Iterable2D<T3> &Z,
+                                 const Iterable2D<T4> &C = {}) {
             return waterfall(to_vector_2d(X), to_vector_2d(Y), to_vector_2d(Z),
                              to_vector_2d(C));
         }
 
         template <class T1, class T2>
-        network_handle graph(const IterableValues<T1> &edges,
-                             const IterableValues<T2> &weights = {},
+        network_handle graph(const Iterable1D<T1> &edges,
+                             const Iterable1D<T2> &weights = {},
                              size_t n_vertices = 0,
                              std::string line_spec = "-o") {
             return graph(to_vector_1d<T1, std::pair<size_t, size_t>>(edges),
@@ -2535,22 +2532,22 @@ namespace matplot {
         }
 
         template <class T1>
-        network_handle graph(const IterableValues<T1> &edges,
+        network_handle graph(const Iterable1D<T1> &edges,
                              const std::string &line_spec) {
             return graph(to_vector_1d<T1, std::pair<size_t, size_t>>(edges),
                          line_spec);
         }
 
         template <class T1>
-        matrix_handle imshow(const IterableIterables<T1> &gray_scale_img) {
+        matrix_handle imshow(const Iterable2D<T1> &gray_scale_img) {
             return imshow(to_vector_2d<T1, unsigned char>(gray_scale_img));
         }
 
         template <class T1, class T2, class T3, class T4>
-        matrix_handle imshow(const IterableIterables<T1> &r_channel,
-                             const IterableIterables<T2> &g_channel,
-                             const IterableIterables<T3> &b_channel,
-                             const IterableIterables<T4> &a_channel =
+        matrix_handle imshow(const Iterable2D<T1> &r_channel,
+                             const Iterable2D<T2> &g_channel,
+                             const Iterable2D<T3> &b_channel,
+                             const Iterable2D<T4> &a_channel =
                                  std::vector<std::vector<unsigned char>>{}) {
             return imshow(to_vector_2d<T1, unsigned char>(r_channel),
                           to_vector_2d<T1, unsigned char>(g_channel),
@@ -2559,7 +2556,7 @@ namespace matplot {
         }
 
         template <class T1>
-        matrix_handle imshow(const std::vector<IterableIterables<T1>> &img) {
+        matrix_handle imshow(const std::vector<Iterable2D<T1>> &img) {
             std::vector<std::vector<std::vector<unsigned char>>> v_img(
                 img.size());
             for (size_t i = 0; i < img.size(); ++i) {
@@ -2569,15 +2566,15 @@ namespace matplot {
         }
 
         template <class T1>
-        matrix_handle image(const IterableIterables<T1> &C,
+        matrix_handle image(const Iterable2D<T1> &C,
                             bool scaled_colorbar = false) {
             return image(to_vector_2d(C), scaled_colorbar);
         }
 
         template <class T1, class T2, class T3>
-        matrix_handle image(const IterableIterables<T1> &r_channel,
-                            const IterableIterables<T2> &g_channel,
-                            const IterableIterables<T3> &b_channel,
+        matrix_handle image(const Iterable2D<T1> &r_channel,
+                            const Iterable2D<T2> &g_channel,
+                            const Iterable2D<T3> &b_channel,
                             bool scaled_colorbar = false) {
             return image(to_vector_2d(r_channel), to_vector_2d(g_channel),
                          to_vector_2d(b_channel), scaled_colorbar);
@@ -2585,7 +2582,7 @@ namespace matplot {
 
         template <class T1>
         matrix_handle image(double x_min, double x_max, double y_min,
-                            double y_max, const IterableIterables<T1> &C,
+                            double y_max, const Iterable2D<T1> &C,
                             bool scaled_colorbar = false) {
             return image(x_min, x_max, y_min, y_max, to_vector_2d(C),
                          scaled_colorbar);
@@ -2593,8 +2590,8 @@ namespace matplot {
 
         template <class T1, class T2, class T3>
         matrix_handle
-        image(const std::tuple<IterableIterables<T1>, IterableIterables<T2>,
-                               IterableIterables<T3>> &img) {
+        image(const std::tuple<Iterable2D<T1>, Iterable2D<T2>,
+                                             Iterable2D<T3>> &img) {
             std::tuple<std::vector<std::vector<double>>,
                        std::vector<std::vector<double>>,
                        std::vector<std::vector<double>>>
@@ -2605,22 +2602,22 @@ namespace matplot {
         }
 
         template <class T1, class T2>
-        labels_handle text(const IterableValues<T1> &x,
-                           const IterableValues<T2> &y,
+        labels_handle text(const Iterable1D<T1> &x,
+                           const Iterable1D<T2> &y,
                            const std::vector<std::string> &texts) {
             return text(to_vector_1d(x), to_vector_1d(y), texts);
         }
 
         template <class T1, class T2>
-        labels_handle text(const IterableValues<T1> &x,
-                           const IterableValues<T2> &y,
+        labels_handle text(const Iterable1D<T1> &x,
+                           const Iterable1D<T2> &y,
                            const std::string &str) {
             return text(to_vector_1d(x), to_vector_1d(y), str);
         }
 
         template <class T1, class T2>
-        line_handle fill(const IterableValues<T1> &x,
-                         const IterableValues<T2> &y,
+        line_handle fill(const Iterable1D<T1> &x,
+                         const Iterable1D<T2> &y,
                          const std::string &line_spec = "") {
             return fill(to_vector_1d(x), to_vector_1d(y), line_spec);
         }
