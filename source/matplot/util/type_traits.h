@@ -78,18 +78,18 @@ namespace matplot {
     }
 
     template <typename C>
-    struct is_iterable : std::bool_constant<detail::is_constainer_iterable_v<C>> {};
+    using is_iterable = std::bool_constant<detail::is_constainer_iterable_v<C>>;
 
     template <typename C> constexpr bool is_iterable_v = is_iterable<C>::value;
 
     template <typename C>
-    struct has_value_type : std::bool_constant<detail::has_container_value_type<C>> {};
+    using has_value_type = std::bool_constant<detail::has_container_value_type<C>>;
 
     template <typename C>
     constexpr bool has_value_type_v = has_value_type<C>::value;
 
     template <typename C>
-    struct has_iterable_value_type : has_value_type<detail::detected_or_t<void, detail::container_value_type, C>> {};
+    using has_iterable_value_type = has_value_type<detail::detected_or_t<void, detail::container_value_type, C>>;
 
     template <typename C>
     constexpr bool has_iterable_value_type_v =
@@ -97,27 +97,24 @@ namespace matplot {
 
     // Something like std::vector<double>
     template <class C>
-    struct is_iterable_value
-        : public std::integral_constant<
-              bool, is_iterable_v<C> && !has_iterable_value_type_v<C>> {};
+    using is_iterable_value =
+        std::bool_constant<is_iterable_v<C> && !has_iterable_value_type_v<C>>;
 
     template <typename C>
     constexpr bool is_iterable_value_v = is_iterable_value<C>::value;
 
     // Something like std::vector<std::vector<double>>
     template <class C>
-    struct is_iterable_iterable
-        : public std::integral_constant<
-              bool, is_iterable_v<C> && has_iterable_value_type_v<C>> {};
+    using is_iterable_iterable =
+        std::bool_constant<is_iterable_v<C> && has_iterable_value_type_v<C>>;
 
     template <typename C>
     constexpr bool is_iterable_iterable_v = is_iterable_iterable<C>::value;
 
     template <class T>
     using is_string =
-        std::integral_constant<bool,
-                               std::is_same_v<std::decay_t<T>, std::string> &&
-                                   std::is_convertible_v<T, std::string>>;
+        std::bool_constant<std::is_same_v<std::decay_t<T>, std::string> &&
+                           std::is_convertible_v<T, std::string>>;
 
     template <typename C> constexpr bool is_string_v = is_string<C>::value;
 
@@ -129,10 +126,9 @@ namespace matplot {
     template <typename T> constexpr bool is_pair_v = is_pair<T>::value;
 
     template <class C>
-    struct is_iterable_pair
-        : public std::integral_constant<
-              bool, is_iterable_v<C> && !has_iterable_value_type_v<C> &&
-                        is_pair_v<typename C::value_type>> {};
+    using is_iterable_pair =
+        std::bool_constant<is_iterable_v<C> && !has_iterable_value_type_v<C> &&
+                           is_pair_v<detail::detected_or_t<void, detail::container_value_type, C>>>;
 
     template <typename C>
     constexpr bool is_iterable_pair_v = is_iterable_pair<C>::value;
