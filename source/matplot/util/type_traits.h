@@ -92,6 +92,14 @@ namespace matplot {
     template <typename C>
     constexpr bool is_iterable_2d_v = is_iterable_2d<C>::value;
 
+    template <typename C>
+    using is_iterable_3d =
+        std::bool_constant<is_iterable_v<C> &&
+                           is_iterable_2d_v<detail::detected_or_t<void, detail::iterable_value_type, C>>>;
+
+    template <typename C>
+    constexpr bool is_iterable_3d_v = is_iterable_3d<C>::value;
+
     template <class T>
     using is_string =
         std::bool_constant<std::is_same_v<std::decay_t<T>, std::string> &&

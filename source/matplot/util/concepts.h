@@ -102,6 +102,10 @@ namespace matplot {
     template <typename T>
     using Iterable2D = TypeConcept<T, is_iterable_2d_v<std::decay_t<T>>>;
 
+    // TypeConcept where C is true only if T is Iterable3D
+    template <typename T>
+    using Iterable3D = TypeConcept<T, is_iterable_3d_v<std::decay_t<T>>>;
+
     // TypeConcept where C is true only if T is IterableValues
     template <typename T>
     using NotAxesHandle =
