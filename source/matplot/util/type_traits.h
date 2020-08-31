@@ -10,45 +10,86 @@
 #include <vector>
 
 namespace matplot {
-    template <typename C> struct is_iterable {
-        typedef long false_type;
-        typedef char true_type;
+    namespace detail {
+        // Implementation of is_detected, detected_t, detected_or
+        // https://en.cppreference.com/w/cpp/experimental/is_detected
+        namespace detail {
+            template <class Default, class AlwaysVoid,
+                template<class...> class Op, class... Args>
+            struct detector {
+                using value_t = std::false_type;
+                using type = Default;
+            };
 
-        template <class T> static false_type check(...);
-        template <class T>
-        static true_type check(int, typename T::const_iterator = C().end());
+            template <class Default, template<class...> class Op, class... Args>
+            struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
+                using value_t = std::true_type;
+                using type = Op<Args...>;
+            };
 
-        enum { value = sizeof(check<C>(0)) == sizeof(true_type) };
-    };
+        }
+
+        template <template<class...> class Op, class... Args>
+        using is_detected = typename detail::detector<void, void, Op, Args...>::value_t;
+
+        template <template<class...> class Op, class... Args>
+        inline constexpr bool is_detected_v = is_detected<Op, Args...>::value;
+
+        template <template<class...> class Op, class... Args>
+        using detected_t = typename detail::detector<std::enable_if_t<is_detected_v<Op, Args...>, void>, void, Op, Args...>::type;
+
+        template <class Default, template<class...> class Op, class... Args>
+        using detected_or = detail::detector<Default, void, Op, Args...>;
+
+        template <class Default, template<class...> class Op, class... Args>
+        using detected_or_t = typename detected_or<Default, Op, Args...>::type;
+
+
+        template <typename T>
+        using dereferenced_type = decltype(*std::declval<T>());
+
+        template <typename C>
+        using container_const_iterator = typename C::const_iterator;
+
+        template <typename C>
+        using container_value_type = typename C::value_type;
+
+        template <typename C>
+        using container_begin = decltype(std::declval<C>().begin());
+
+        template <typename C>
+        using container_end = decltype(std::declval<C>().end());
+
+        template <typename C>
+        inline constexpr bool is_constainer_iterable_v =
+            is_detected_v<container_const_iterator, C> &&
+            is_detected_v<container_begin, C> &&
+            is_detected_v<container_end, C> &&
+            std::is_same_v<detected_or_t<void, container_begin, C>,
+                           detected_or_t<void, container_end, C>> &&
+            std::is_convertible_v<detected_or_t<void, container_begin, C>,
+                                  detected_or_t<void, container_const_iterator, C>>;
+
+        template <typename C>
+        inline constexpr bool has_container_value_type =
+            is_detected_v<container_value_type, C> &&
+            std::is_same_v<detected_or_t<void, container_value_type, C>,
+                           detected_or_t<void, dereferenced_type, detected_or_t<void, container_begin, C>>>;
+    }
+
+    template <typename C>
+    struct is_iterable : std::bool_constant<detail::is_constainer_iterable_v<C>> {};
 
     template <typename C> constexpr bool is_iterable_v = is_iterable<C>::value;
 
-    template <typename C> struct has_value_type {
-        typedef long false_type;
-        typedef char true_type;
-
-        template <class T> static false_type check(...);
-        template <class T>
-        static true_type check(int, typename T::value_type = *C().begin());
-
-        enum { value = sizeof(check<C>(0)) == sizeof(true_type) };
-    };
+    template <typename C>
+    struct has_value_type : std::bool_constant<detail::has_container_value_type<C>> {};
 
     template <typename C>
     constexpr bool has_value_type_v = has_value_type<C>::value;
 
-    template <typename C> struct has_iterable_value_type {
-        typedef long false_type;
-        typedef char true_type;
-
-        template <class T> static false_type check(...);
-        template <class T>
-        static true_type
-        check(int,
-              typename T::value_type::value_type = *(C().begin()->begin()));
-
-        enum { value = sizeof(check<C>(0)) == sizeof(true_type) };
-    };
+    template <typename C>
+    struct has_iterable_value_type : has_value_type<detail::detected_or_t<void, detail::container_value_type, C>> {};
 
     template <typename C>
     constexpr bool has_iterable_value_type_v =
