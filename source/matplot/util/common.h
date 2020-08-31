@@ -69,6 +69,8 @@ namespace matplot {
 
     using vector_2d = std::vector<vector_1d>;
 
+    using vector_3d = std::vector<vector_2d>;
+
     std::vector<double> linspace(double lower_bound, double upper_bound);
 
     std::vector<double> linspace(double lower_bound, double upper_bound,
@@ -162,48 +164,32 @@ namespace matplot {
         return r;
     }
 
-    template <class T> std::vector<vector_2d> to_vector_3d(const T &v) {
-        std::vector<vector_2d> r(v.size());
-        size_t matrix_index = 0;
-        for (auto matrix_it = v.begin(); matrix_it != v.end();
-             ++matrix_it, ++matrix_index) {
-            r[matrix_index] = vector_2d(matrix_it->size());
-            size_t i = 0;
-            for (auto v_it = matrix_it->begin(); v_it != matrix_it->end();
-                 ++v_it, ++i) {
-                r[matrix_index][i] = vector_1d(v_it->size());
-                size_t j = 0;
-                for (auto vj_it = v_it->begin(); vj_it != v_it->end();
-                     ++vj_it, ++j) {
-                    r[matrix_index][i][j] = static_cast<double>(*vj_it);
-                }
-            }
-        }
+    template <class T>
+    inline std::enable_if_t<is_iterable_1d_v<T>, vector_1d> to_vector_1d(const T &v) {
+        return vector_1d(begin(v), end(v));
+    }
+
+    template <class T>
+    inline std::enable_if_t<is_iterable_2d_v<T>, vector_2d> to_vector_2d(const T &v) {
+        auto b = begin(v), e = end(v);
+        vector_2d r(std::distance(b, e));
+
+        std::transform(b, e, r.begin(), [](auto&& v) -> vector_1d {
+            return to_vector_1d<std::decay_t<decltype(v)>>(v);
+        });
+
         return r;
     }
 
-    template <class T, class DESTINATION_VALUE_TYPE = double>
-    vector_2d to_vector_2d(const T &v) {
-        std::vector<std::vector<DESTINATION_VALUE_TYPE>> r(v.size());
-        size_t i = 0;
-        for (auto v_it = v.begin(); v_it != v.end(); ++v_it, ++i) {
-            r[i] = std::vector<DESTINATION_VALUE_TYPE>(v_it->size());
-            size_t j = 0;
-            for (auto vj_it = v_it->begin(); vj_it != v_it->end();
-                 ++vj_it, ++j) {
-                r[i][j] = static_cast<DESTINATION_VALUE_TYPE>(*vj_it);
-            }
-        }
-        return r;
-    }
+    template <class T>
+    inline std::enable_if_t<is_iterable_3d_v<T>, vector_3d> to_vector_3d(const T &v) {
+        auto b = v.begin(), e = v.end();
+        vector_3d r(std::distance(b, e));
 
-    template <class T, class DESTINATION_VALUE_TYPE = double>
-    vector_1d to_vector_1d(const T &v) {
-        std::vector<DESTINATION_VALUE_TYPE> r(v.size());
-        size_t i = 0;
-        for (auto v_it = v.begin(); v_it != v.end(); ++v_it, ++i) {
-            r[i] = static_cast<DESTINATION_VALUE_TYPE>(*v_it);
-        }
+        std::transform(b, e, r.begin(), [](auto&& v) -> vector_2d {
+          return to_vector_2d<std::decay_t<decltype(v)>>(v);
+        });
+
         return r;
     }
 
