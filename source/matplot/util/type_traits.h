@@ -46,59 +46,39 @@ namespace matplot {
 
 
         template <typename T>
-        using dereferenced_type = decltype(*std::declval<T>());
+        using iterator_value_type = typename std::iterator_traits<T>::value_type;
+
+        template <typename T>
+        constexpr inline bool is_iterator = is_detected_v<iterator_value_type, T>;
 
         template <typename C>
-        using container_const_iterator = typename C::const_iterator;
+        using iterable_begin = decltype(std::declval<C>().begin());
 
         template <typename C>
-        using container_value_type = typename C::value_type;
+        using iterable_end = decltype(std::declval<C>().end());
 
         template <typename C>
-        using container_begin = decltype(std::declval<C>().begin());
+        using iterable_value_type = iterator_value_type<iterable_begin<C>>;
 
         template <typename C>
-        using container_end = decltype(std::declval<C>().end());
-
-        template <typename C>
-        inline constexpr bool is_constainer_iterable_v =
-            is_detected_v<container_const_iterator, C> &&
-            is_detected_v<container_begin, C> &&
-            is_detected_v<container_end, C> &&
-            std::is_same_v<detected_or_t<void, container_begin, C>,
-                           detected_or_t<void, container_end, C>> &&
-            std::is_convertible_v<detected_or_t<void, container_begin, C>,
-                                  detected_or_t<void, container_const_iterator, C>>;
-
-        template <typename C>
-        inline constexpr bool has_container_value_type =
-            is_detected_v<container_value_type, C> &&
-            std::is_same_v<detected_or_t<void, container_value_type, C>,
-                           detected_or_t<void, dereferenced_type, detected_or_t<void, container_begin, C>>>;
+        inline constexpr bool is_iterable_v =
+            is_detected_v<iterable_begin, std::add_const_t<C>> &&
+            is_detected_v<iterable_end, std::add_const_t<C>> &&
+            std::is_same_v<detected_or_t<void, iterable_begin, std::add_const_t<C>>,
+                           detected_or_t<void, iterable_end, std::add_const_t<C>>> &&
+            is_iterator<detected_or_t<void, iterable_begin, std::add_const_t<C>>>;
     }
 
     template <typename C>
-    using is_iterable = std::bool_constant<detail::is_constainer_iterable_v<C>>;
+    using is_iterable = std::bool_constant<detail::is_iterable_v<C>>;
 
     template <typename C> constexpr bool is_iterable_v = is_iterable<C>::value;
-
-    template <typename C>
-    using has_value_type = std::bool_constant<detail::has_container_value_type<C>>;
-
-    template <typename C>
-    constexpr bool has_value_type_v = has_value_type<C>::value;
-
-    template <typename C>
-    using has_iterable_value_type = has_value_type<detail::detected_or_t<void, detail::container_value_type, C>>;
-
-    template <typename C>
-    constexpr bool has_iterable_value_type_v =
-        has_iterable_value_type<C>::value;
 
     // Something like std::vector<double>
     template <class C>
     using is_iterable_1d =
-        std::bool_constant<is_iterable_v<C> && !has_iterable_value_type_v<C>>;
+        std::bool_constant<is_iterable_v<C> &&
+                           !is_iterable_v<detail::detected_or_t<void, detail::iterable_value_type, C>>>;
 
     template <typename C>
     constexpr bool is_iterable_1d_v = is_iterable_1d<C>::value;
@@ -106,7 +86,8 @@ namespace matplot {
     // Something like std::vector<std::vector<double>>
     template <class C>
     using is_iterable_2d =
-        std::bool_constant<is_iterable_v<C> && has_iterable_value_type_v<C>>;
+        std::bool_constant<is_iterable_v<C> &&
+                           is_iterable_1d_v<detail::detected_or_t<void, detail::iterable_value_type, C>>>;
 
     template <typename C>
     constexpr bool is_iterable_2d_v = is_iterable_2d<C>::value;
@@ -127,8 +108,8 @@ namespace matplot {
 
     template <class C>
     using is_iterable_pair =
-        std::bool_constant<is_iterable_v<C> && !has_iterable_value_type_v<C> &&
-                           is_pair_v<detail::detected_or_t<void, detail::container_value_type, C>>>;
+        std::bool_constant<is_iterable_v<C> &&
+                           is_pair_v<detail::detected_or_t<void, detail::iterable_value_type, C>>>;
 
     template <typename C>
     constexpr bool is_iterable_pair_v = is_iterable_pair<C>::value;
