@@ -752,8 +752,8 @@ namespace matplot {
     }
 
     class surface &
-    surface::contour_values(const std::vector<double> &contour_values) {
-        contour_values_ = contour_values;
+    surface::contour_values(vector_proxy<double> contour_values) {
+        contour_values_.assign(contour_values.begin(), contour_values.end());
         touch();
         return *this;
     }

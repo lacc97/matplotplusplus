@@ -287,8 +287,8 @@ namespace matplot {
     std::vector<class axis_type> &parallel_lines::axis() { return axis_; }
 
     class parallel_lines &
-    parallel_lines::axis(const std::vector<class axis_type> &axis) {
-        axis_ = axis;
+    parallel_lines::axis(vector_proxy<class axis_type> axis) {
+        axis_.assign(axis.begin(), axis.end());
         touch();
         return *this;
     }
@@ -324,8 +324,8 @@ namespace matplot {
     }
 
     class parallel_lines &
-    parallel_lines::line_colors(const std::vector<double> &line_colors) {
-        line_colors_ = line_colors;
+    parallel_lines::line_colors(vector_proxy<double> line_colors) {
+        line_colors_.assign(line_colors.begin(), line_colors.end());
         return *this;
     }
 

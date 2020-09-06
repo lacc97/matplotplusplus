@@ -35,9 +35,7 @@ namespace matplot {
       public:
         legend() = default;
         legend(class axes_type *parent);
-        legend(class axes_type *parent,
-               std::initializer_list<std::string> names);
-        legend(class axes_type *parent, const std::vector<std::string> &names);
+        legend(class axes_type *parent, vector_proxy<std::string> names);
 
       public /* useful functions */:
         void touch();
@@ -53,7 +51,7 @@ namespace matplot {
       public /* getter and setters */:
         std::vector<std::string> &strings();
         const std::vector<std::string> &strings() const;
-        void strings(const std::vector<std::string> &strings);
+        void strings(vector_proxy<std::string> strings);
 
         void inside(bool inside);
         bool inside() const;

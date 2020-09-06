@@ -410,7 +410,8 @@ namespace matplot {
         _levels = levels_;
 
         // Extend minimum beyond zmin (for filled plots)
-        const bool log = parent_->z_axis().scale() == axis_type::axis_scale::log;
+        const bool log =
+            parent_->z_axis().scale() == axis_type::axis_scale::log;
         if (extend_ == extend_option::both || extend_ == extend_option::min) {
             double lower = log ? 1e-250 : -1e250;
             _levels.insert(_levels.begin(), lower);
@@ -1361,8 +1362,8 @@ namespace matplot {
 
     const std::vector<double> &contours::levels() const { return levels_; }
 
-    class contours &contours::levels(const std::vector<double> &levels) {
-        levels_ = levels;
+    class contours &contours::levels(vector_proxy<double> levels) {
+        levels_.assign(levels.begin(), levels.end());
         if (!std::is_sorted(levels_.begin(), levels_.end())) {
             std::sort(levels_.begin(), levels_.end());
         }

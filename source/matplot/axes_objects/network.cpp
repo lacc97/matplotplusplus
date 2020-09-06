@@ -16,11 +16,12 @@ namespace matplot {
     network::network(class axes_type *parent) : axes_object(parent) {}
 
     network::network(class axes_type *parent,
-                     const std::vector<std::pair<size_t, size_t>> &edges,
-                     const vector_1d &weights, size_t n_vertices,
+                     vector_proxy<std::pair<size_t, size_t>> edges,
+                     vector_proxy<double> weights, size_t n_vertices,
                      std::string_view line_spec)
-        : axes_object(parent), edges_(edges), weights_(weights),
-          n_vertices_(n_vertices), line_spec_(this, line_spec) {
+        : axes_object(parent), edges_(edges.begin(), edges.end()),
+          weights_(weights.begin(), weights.end()), n_vertices_(n_vertices),
+          line_spec_(this, line_spec) {
         line_spec_.marker_face(true);
     }
 
@@ -462,8 +463,8 @@ namespace matplot {
 
     const std::vector<double> &network::y_data() const { return y_data_; }
 
-    class network &network::y_data(const std::vector<double> &y_data) {
-        y_data_ = y_data;
+    class network &network::y_data(vector_proxy<double> y_data) {
+        y_data_.assign(y_data.begin(), y_data.end());
         if (!y_data.empty() && parent_->children().size() == 1) {
             parent_->y_axis().limits({ymin(), ymax()});
         }
@@ -473,8 +474,8 @@ namespace matplot {
 
     const std::vector<double> &network::x_data() const { return x_data_; }
 
-    class network &network::x_data(const std::vector<double> &x_data) {
-        x_data_ = x_data;
+    class network &network::x_data(vector_proxy<double> x_data) {
+        x_data_.assign(x_data.begin(), x_data.end());
         if (!x_data.empty() && parent_->children().size() == 1) {
             parent_->x_axis().limits({xmin(), xmax()});
         }
@@ -484,8 +485,8 @@ namespace matplot {
 
     const std::vector<double> &network::z_data() const { return z_data_; }
 
-    class network &network::z_data(const std::vector<double> &z_data) {
-        z_data_ = z_data;
+    class network &network::z_data(vector_proxy<double> z_data) {
+        z_data_.assign(z_data.begin(), z_data.end());
         if (!z_data.empty() && parent_->children().size() == 1) {
             auto [zmin, zmax] = minmax(z_data);
             parent_->z_axis().limits({zmin, zmax});
@@ -519,22 +520,13 @@ namespace matplot {
 
     float network::marker_size() const { return line_spec().marker_size(); }
 
-    class network &network::marker_size(float size) {
-        line_spec().marker_size(size);
-        return *this;
-    }
-
-    class network &network::marker_size(const std::vector<float> &size_vector) {
-        marker_sizes_ = size_vector;
-        touch();
-        return *this;
-    }
-
-    class network &
-    network::marker_size(const std::vector<double> &size_vector) {
-        std::vector<float> size_vector_float(size_vector.begin(),
-                                             size_vector.end());
-        marker_size(size_vector_float);
+    class network &network::marker_size(vector_proxy<double> size_vector) {
+        if (size_vector.size() == 1) {
+            line_spec().marker_size(size_vector[0]);
+        } else {
+            marker_sizes_.assign(size_vector.begin(), size_vector.end());
+            touch();
+        }
         return *this;
     }
 
@@ -595,9 +587,8 @@ namespace matplot {
         return edge_labels_;
     }
 
-    class network &
-    network::edge_labels(const std::vector<std::string> &edge_labels) {
-        edge_labels_ = edge_labels;
+    class network &network::edge_labels(vector_proxy<std::string> edge_labels) {
+        edge_labels_.assign(edge_labels.begin(), edge_labels.end());
         touch();
         return *this;
     }
@@ -606,9 +597,8 @@ namespace matplot {
         return node_labels_;
     }
 
-    class network &
-    network::node_labels(const std::vector<std::string> &node_labels) {
-        node_labels_ = node_labels;
+    class network &network::node_labels(vector_proxy<std::string> node_labels) {
+        node_labels_.assign(node_labels.begin(), node_labels.end());
         touch();
         return *this;
     }
@@ -617,9 +607,8 @@ namespace matplot {
         return line_widths_;
     }
 
-    class network &
-    network::line_widths(const std::vector<double> &line_widths) {
-        line_widths_ = line_widths;
+    class network &network::line_widths(vector_proxy<double> line_widths) {
+        line_widths_.assign(line_widths.begin(), line_widths.end());
         touch();
         return *this;
     }
@@ -629,8 +618,8 @@ namespace matplot {
     }
 
     class network &
-    network::edges(const std::vector<std::pair<size_t, size_t>> &edges) {
-        edges_ = edges;
+    network::edges(vector_proxy<std::pair<size_t, size_t>> edges) {
+        edges_.assign(edges.begin(), edges.end());
         touch();
         return *this;
     }
@@ -643,8 +632,8 @@ namespace matplot {
 
     const vector_1d &network::weights() const { return weights_; }
 
-    class network &network::weights(const vector_1d &weights) {
-        weights_ = weights;
+    class network &network::weights(vector_proxy<double> weights) {
+        weights_.assign(weights.begin(), weights.end());
         touch();
         return *this;
     }
@@ -708,9 +697,8 @@ namespace matplot {
         return marker_sizes_;
     }
 
-    class network &
-    network::marker_sizes(const std::vector<float> &marker_sizes) {
-        marker_sizes_ = marker_sizes;
+    class network &network::marker_sizes(vector_proxy<float> marker_sizes) {
+        marker_sizes_.assign(marker_sizes.begin(), marker_sizes.end());
         touch();
         return *this;
     }

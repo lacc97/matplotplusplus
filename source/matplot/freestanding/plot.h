@@ -41,62 +41,59 @@ namespace matplot {
         return ax->plot(std::forward<Args>(args)...);
     }
 
-    inline line_handle plot(const std::vector<double> &x,
-                            const std::vector<double> &y,
+    inline line_handle plot(vector_proxy<double> x, vector_proxy<double> y,
                             std::string_view line_spec = "") {
         return gca()->plot(x, y, line_spec);
     }
 
-    inline line_handle plot(const std::vector<double> &y,
+    inline line_handle plot(vector_proxy<double> y,
                             std::string_view line_spec = "") {
         return gca()->plot(y, line_spec);
     }
 
     template <class... Args>
-    auto plot(const std::vector<double> &x, const std::vector<double> &y,
+    auto plot(vector_proxy<double> x, vector_proxy<double> y,
               std::string_view line_spec, Args&&... args) {
         return gca()->plot(x, y, line_spec, std::forward<Args>(args)...);
     }
 
     template <class... Args>
-    auto plot(const std::vector<double> &x, const std::vector<double> &y,
-              const std::vector<double> &x2, Args&&... args) {
+    auto plot(vector_proxy<double> x, vector_proxy<double> y,
+              vector_proxy<double> x2, Args&&... args) {
         return gca()->plot(x, y, x2, std::forward<Args>(args)...);
     }
 
     template <class... Args>
-    auto plot(const std::vector<double> &y, std::string_view line_spec,
+    auto plot(vector_proxy<double> y, std::string_view line_spec,
               Args&&... args) {
         return gca()->plot(y, line_spec, std::forward<Args>(args)...);
     }
 
-    inline line_handle plot(axes_handle ax, const std::vector<double> &x,
-                            const std::vector<double> &y,
+    inline line_handle plot(axes_handle ax, vector_proxy<double> x,
+                            vector_proxy<double> y,
                             std::string_view line_spec = "") {
         return ax->plot(x, y, line_spec);
     }
 
-    inline line_handle plot(axes_handle ax, const std::vector<double> &y,
+    inline line_handle plot(axes_handle ax, vector_proxy<double> y,
                             std::string_view line_spec = "") {
         return ax->plot(y, line_spec);
     }
 
     template <class... Args>
-    auto plot(axes_handle ax, const std::vector<double> &x,
-              const std::vector<double> &y, std::string_view line_spec,
-              Args&&... args) {
+    auto plot(axes_handle ax, vector_proxy<double> x, vector_proxy<double> y,
+              std::string_view line_spec, Args&&... args) {
         return ax->plot(x, y, line_spec, std::forward<Args>(args)...);
     }
 
     template <class... Args>
-    auto plot(axes_handle ax, const std::vector<double> &x,
-              const std::vector<double> &y, const std::vector<double> &x2,
-              Args&&... args) {
+    auto plot(axes_handle ax, vector_proxy<double> x, vector_proxy<double> y,
+              vector_proxy<double> x2, Args&&... args) {
         return ax->plot(x, y, x2, std::forward<Args>(args)...);
     }
 
     template <class... Args>
-    auto plot(axes_handle ax, const std::vector<double> &y,
+    auto plot(axes_handle ax, vector_proxy<double> y,
               std::string_view line_spec, Args&&... args) {
         return ax->plot(y, line_spec, std::forward<Args>(args)...);
     }
@@ -459,8 +456,7 @@ namespace matplot {
     }
 
     template <class T1, class T2, class T3>
-    auto contour(axes_handle ax, T1 v1, T2 v2, T3 v3,
-                 const std::vector<double> &il) {
+    auto contour(axes_handle ax, T1 v1, T2 v2, T3 v3, vector_proxy<double> il) {
         return ax->contour(v1, v2, v3, il);
     }
 
@@ -475,12 +471,12 @@ namespace matplot {
 
     template <class T1, class T2, class T3>
     auto contourf(axes_handle ax, T1 v1, T2 v2, T3 v3,
-                  const std::vector<double> &il) {
+                  vector_proxy<double> il) {
         return ax->contourf(v1, v2, v3, il);
     }
 
     template <class T1, class T2, class T3>
-    auto contourf(T1 v1, T2 v2, T3 v3, const std::vector<double> &il) {
+    auto contourf(T1 v1, T2 v2, T3 v3, vector_proxy<double> il) {
         return gca()->contourf(v1, v2, v3, il);
     }
 
@@ -500,7 +496,7 @@ namespace matplot {
 
     inline contours_handle fcontour(axes_type::fcontour_function_type fn,
                                     const std::array<double, 4> &xy_range,
-                                    std::vector<double> levels,
+                                    vector_proxy<double> levels,
                                     std::string_view line_spec = "") {
         return gca()->fcontour(fn, xy_range, levels, line_spec);
     }
@@ -513,7 +509,7 @@ namespace matplot {
     inline contours_handle fcontour(axes_handle ax,
                                     axes_type::fcontour_function_type fn,
                                     const std::array<double, 4> &xy_range,
-                                    std::vector<double> levels,
+                                    vector_proxy<double> levels,
                                     std::string_view line_spec = "") {
         return ax->fcontour(fn, xy_range, levels, line_spec);
     }
@@ -609,7 +605,7 @@ namespace matplot {
     /// Function surf
     /// Grid / Both ranges in the same array size 4
     inline surface_handle fsurf(axes_type::fcontour_function_type fn,
-                                std::initializer_list<double> xy_range,
+                                vector_proxy<double> xy_range,
                                 std::string_view line_spec = "",
                                 double mesh_density = 40) {
         return gca()->fsurf(fn, xy_range, line_spec, mesh_density);
@@ -650,7 +646,7 @@ namespace matplot {
     inline surface_handle fsurf(axes_type::fcontour_function_type funx,
                                 axes_type::fcontour_function_type funy,
                                 axes_type::fcontour_function_type funz,
-                                std::initializer_list<double> &uv_range,
+                                vector_proxy<double> uv_range,
                                 std::string_view line_spec = "",
                                 double mesh_density = 40) {
         return gca()->fsurf(funx, funy, funz, uv_range, line_spec,
@@ -722,13 +718,11 @@ namespace matplot {
         return ax->fsurf(funx, funy, funz, uv_range, line_spec, mesh_density);
     }
 
-    inline surface_handle fsurf(axes_handle ax,
-                                axes_type::fcontour_function_type funx,
-                                axes_type::fcontour_function_type funy,
-                                axes_type::fcontour_function_type funz,
-                                std::initializer_list<double> &uv_range,
-                                std::string_view line_spec = "",
-                                double mesh_density = 40) {
+    inline surface_handle
+    fsurf(axes_handle ax, axes_type::fcontour_function_type funx,
+          axes_type::fcontour_function_type funy,
+          axes_type::fcontour_function_type funz, vector_proxy<double> uv_range,
+          std::string_view line_spec = "", double mesh_density = 40) {
         return ax->fsurf(funx, funy, funz, uv_range, line_spec, mesh_density);
     }
 
@@ -831,27 +825,24 @@ namespace matplot {
         return ax->text(std::forward<Args>(args)...);
     }
 
-    inline labels_handle text(const std::vector<double> &x,
-                              const std::vector<double> &y,
-                              const std::vector<std::string> &texts) {
+    inline labels_handle text(vector_proxy<double> x, vector_proxy<double> y,
+                              vector_proxy<std::string> texts) {
         return gca()->text(x, y, texts);
     }
 
-    inline labels_handle text(const std::vector<double> &x,
-                              const std::vector<double> &y,
+    inline labels_handle text(vector_proxy<double> x, vector_proxy<double> y,
                               std::string_view str) {
         return gca()->text(x, y, str);
     }
 
-    inline labels_handle text(axes_handle ax, const std::vector<double> &x,
-                              const std::vector<double> &y,
-                              const std::vector<std::string> &texts) {
+    inline labels_handle text(axes_handle ax, vector_proxy<double> x,
+                              vector_proxy<double> y,
+                              vector_proxy<std::string> texts) {
         return ax->text(x, y, texts);
     }
 
-    inline labels_handle text(axes_handle ax, const std::vector<double> &x,
-                              const std::vector<double> &y,
-                              std::string_view str) {
+    inline labels_handle text(axes_handle ax, vector_proxy<double> x,
+                              vector_proxy<double> y, std::string_view str) {
         return ax->text(x, y, str);
     }
 

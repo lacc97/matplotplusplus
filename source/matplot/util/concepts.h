@@ -7,6 +7,7 @@
 
 #include <matplot/util/handle_types.h>
 #include <matplot/util/type_traits.h>
+#include <matplot/util/vector_proxy.h>
 #include <string>
 
 namespace matplot {
@@ -94,6 +95,12 @@ namespace matplot {
     // TypeConcept where C is true only if T is IterableValues
     template <typename T>
     using IterableValues = TypeConcept<T, is_iterable_value_v<std::decay_t<T>>>;
+
+    // TypeConcept where C is true only if T is IterableValues or a proxyable type
+    template <typename T>
+    using IterableOrProxyableValues = TypeConcept<
+        T, std::is_convertible_v<std::decay_t<T>, vector_proxy<double>> ||
+    is_iterable_value_v<std::decay_t<T>>>;
 
     // TypeConcept where C is true only if T is IterablePair
     template <typename T>

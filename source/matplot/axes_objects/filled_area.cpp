@@ -10,13 +10,12 @@
 namespace matplot {
     filled_area::filled_area(class axes_type *parent) : line(parent) {}
 
-    filled_area::filled_area(class axes_type *parent,
-                             const std::vector<double> &x,
-                             const std::vector<double> &y,
-                             const std::vector<double> &base_values,
-                             bool stacked, std::string_view line_spec)
+    filled_area::filled_area(class axes_type *parent, vector_proxy<double> x,
+                             vector_proxy<double> y,
+                             vector_proxy<double> base_values, bool stacked,
+                             std::string_view line_spec)
         : line(parent, x, y, line_spec), stacked_(stacked),
-          base_data_(base_values) {}
+          base_data_(base_values.begin(), base_values.end()) {}
 
     void filled_area::maybe_update_face_color() {
         // if user has not defined the color yet, get it from the xlim
@@ -149,9 +148,8 @@ namespace matplot {
         return base_data_;
     }
 
-    class filled_area &
-    filled_area::base_data(const std::vector<double> &base_data) {
-        base_data_ = base_data;
+    class filled_area &filled_area::base_data(vector_proxy<double> base_data) {
+        base_data_.assign(base_data.begin(), base_data.end());
         return *this;
     }
 

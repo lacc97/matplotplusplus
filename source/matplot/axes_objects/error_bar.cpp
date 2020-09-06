@@ -10,34 +10,32 @@
 namespace matplot {
     error_bar::error_bar(class axes_type *parent) : line(parent) {}
 
-    error_bar::error_bar(class axes_type *parent, const std::vector<double> &x,
-                         const std::vector<double> &y,
-                         const std::vector<double> &y_neg_delta,
-                         const std::vector<double> &y_pos_delta,
-                         const std::vector<double> &x_neg_delta,
-                         const std::vector<double> &x_pos_delta,
-                         std::string_view line_spec)
-        : line(parent, x, y, line_spec), y_negative_delta_(y_neg_delta),
-          y_positive_delta_(y_pos_delta), x_negative_delta_(x_neg_delta),
-          x_positive_delta_(x_pos_delta) {}
-
-    error_bar::error_bar(class axes_type *parent, const std::vector<double> &x,
-                         const std::vector<double> &y,
-                         const std::vector<double> &error, error_bar::type type,
+    error_bar::error_bar(class axes_type *parent, vector_proxy<double> x,
+                         vector_proxy<double> y,
+                         vector_proxy<double> y_neg_delta,
+                         vector_proxy<double> y_pos_delta,
+                         vector_proxy<double> x_neg_delta,
+                         vector_proxy<double> x_pos_delta,
                          std::string_view line_spec)
         : line(parent, x, y, line_spec),
-          y_negative_delta_(type != error_bar::type::horizontal
-                                ? error
-                                : std::vector<double>({})),
-          y_positive_delta_(type != error_bar::type::horizontal
-                                ? error
-                                : std::vector<double>({})),
-          x_negative_delta_(type != error_bar::type::vertical
-                                ? error
-                                : std::vector<double>({})),
-          x_positive_delta_(type != error_bar::type::vertical
-                                ? error
-                                : std::vector<double>({})) {}
+          y_negative_delta_(y_neg_delta.begin(), y_neg_delta.end()),
+          y_positive_delta_(y_pos_delta.begin(), y_pos_delta.begin()),
+          x_negative_delta_(x_neg_delta.begin(), x_neg_delta.end()),
+          x_positive_delta_(x_pos_delta.begin(), x_pos_delta.end()) {}
+
+    error_bar::error_bar(class axes_type *parent, vector_proxy<double> x,
+                         vector_proxy<double> y, vector_proxy<double> error,
+                         error_bar::type type, std::string_view line_spec)
+        : line(parent, x, y, line_spec) {
+        if (type != error_bar::type::horizontal) {
+            y_positive_delta_.assign(error.begin(), error.end());
+            y_negative_delta_.assign(error.begin(), error.end());
+        }
+        if (type != error_bar::type::vertical) {
+            x_positive_delta_.assign(error.begin(), error.end());
+            x_negative_delta_.assign(error.begin(), error.end());
+        }
+    }
 
     std::string error_bar::plot_string() {
         // plot errorbar behind the line
@@ -151,8 +149,9 @@ namespace matplot {
     }
 
     class error_bar &
-    error_bar::x_negative_delta(const std::vector<double> &x_negative_delta) {
-        x_negative_delta_ = x_negative_delta;
+    error_bar::x_negative_delta(vector_proxy<double> x_negative_delta) {
+        x_negative_delta_.assign(x_negative_delta.begin(),
+                                 x_negative_delta.end());
         touch();
         return *this;
     }
@@ -162,8 +161,9 @@ namespace matplot {
     }
 
     class error_bar &
-    error_bar::x_positive_delta(const std::vector<double> &x_positive_delta) {
-        x_positive_delta_ = x_positive_delta;
+    error_bar::x_positive_delta(vector_proxy<double> x_positive_delta) {
+        x_positive_delta_.assign(x_positive_delta.begin(),
+                                 x_positive_delta.end());
         touch();
         return *this;
     }
@@ -173,8 +173,9 @@ namespace matplot {
     }
 
     class error_bar &
-    error_bar::y_negative_delta(const std::vector<double> &y_negative_delta) {
-        y_negative_delta_ = y_negative_delta;
+    error_bar::y_negative_delta(vector_proxy<double> y_negative_delta) {
+        y_negative_delta_.assign(y_negative_delta.begin(),
+                                 y_negative_delta.end());
         touch();
         return *this;
     }
@@ -184,8 +185,9 @@ namespace matplot {
     }
 
     class error_bar &
-    error_bar::y_positive_delta(const std::vector<double> &y_positive_delta) {
-        y_positive_delta_ = y_positive_delta;
+    error_bar::y_positive_delta(vector_proxy<double> y_positive_delta) {
+        y_positive_delta_.assign(y_positive_delta.begin(),
+                                 y_positive_delta.end());
         touch();
         return *this;
     }

@@ -10,14 +10,15 @@
 #include <sstream>
 
 namespace matplot {
-    circles::circles(class axes_type *parent, const std::vector<double> &x,
-                     const std::vector<double> &y,
-                     const std::vector<double> &radius,
-                     const std::vector<double> &start_angle,
-                     const std::vector<double> &end_angle,
-                     const std::vector<double> &color)
-        : axes_object(parent), x_(x), y_(y), radius_(radius),
-          start_angle_(start_angle), end_angle_(end_angle), color_(color) {}
+    circles::circles(class axes_type *parent, vector_proxy<double> x,
+                     vector_proxy<double> y, vector_proxy<double> radius,
+                     vector_proxy<double> start_angle,
+                     vector_proxy<double> end_angle, vector_proxy<double> color)
+        : axes_object(parent), x_(x.begin(), x.end()), y_(y.begin(), y.end()),
+          radius_(radius.begin(), radius.end()),
+          start_angle_(start_angle.begin(), start_angle.end()),
+          end_angle_(end_angle.begin(), end_angle.end()),
+          color_(color.begin(), color.end()) {}
 
     std::string circles::plot_string() {
         if (!user_face_color_ && color_.empty()) {
@@ -140,24 +141,24 @@ namespace matplot {
 
     const std::vector<double> &circles::x() const { return x_; }
 
-    class circles &circles::x(const std::vector<double> &x) {
-        x_ = x;
+    class circles &circles::x(vector_proxy<double> x) {
+        x_.assign(x.begin(), x.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &circles::y() const { return y_; }
 
-    class circles &circles::y(const std::vector<double> &y) {
-        y_ = y;
+    class circles &circles::y(vector_proxy<double> y) {
+        y_.assign(y.begin(), y.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &circles::radius() const { return radius_; }
 
-    class circles &circles::radius(const std::vector<double> &radius) {
-        radius_ = radius;
+    class circles &circles::radius(vector_proxy<double> radius) {
+        radius_.assign(radius.begin(), radius.end());
         touch();
         return *this;
     }
@@ -166,25 +167,24 @@ namespace matplot {
         return start_angle_;
     }
 
-    class circles &
-    circles::start_angle(const std::vector<double> &start_angle) {
-        start_angle_ = start_angle;
+    class circles &circles::start_angle(vector_proxy<double> start_angle) {
+        start_angle_.assign(start_angle.begin(), start_angle.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &circles::end_angle() const { return end_angle_; }
 
-    class circles &circles::end_angle(const std::vector<double> &end_angle) {
-        end_angle_ = end_angle;
+    class circles &circles::end_angle(vector_proxy<double> end_angle) {
+        end_angle_.assign(end_angle.begin(), end_angle.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &circles::color() const { return color_; }
 
-    class circles &circles::color(const std::vector<double> &color) {
-        color_ = color;
+    class circles &circles::color(vector_proxy<double> color) {
+        color_.assign(color.begin(), color.end());
         touch();
         return *this;
     }

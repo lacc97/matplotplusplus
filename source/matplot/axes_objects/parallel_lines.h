@@ -46,7 +46,7 @@ namespace matplot {
 
         const std::vector<class axis_type> &axis() const;
         std::vector<class axis_type> &axis();
-        class parallel_lines &axis(const std::vector<class axis_type> &axis);
+        class parallel_lines &axis(vector_proxy<class axis_type> axis);
 
         bool visible() const;
         class parallel_lines &visible(bool visible);
@@ -59,8 +59,7 @@ namespace matplot {
         line_widths(const std::vector<float> &line_widths);
 
         const std::vector<double> &line_colors() const;
-        class parallel_lines &
-        line_colors(const std::vector<double> &line_colors);
+        class parallel_lines &line_colors(vector_proxy<double> line_colors);
 
       public /* getters and setters bypassing the line_spec */:
       protected:

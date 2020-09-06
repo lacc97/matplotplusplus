@@ -6,17 +6,45 @@
 #define MATPLOTPLUSPLUS_COMMON_H
 
 #include <algorithm>
+#include <array>
+#include <cctype>
 #include <complex>
 #include <functional>
 #include <map>
 #include <matplot/util/concepts.h>
+#include <matplot/util/vector_proxy.h>
 #include <sstream>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <cctype>
 
 namespace matplot {
+    template <typename U, size_t N> struct proxyable_traits<std::array<U, N>> {
+        inline static constexpr bool is_specialized = true;
+
+        template <typename T>
+        inline static constexpr bool is_proxyable =
+            std::is_same_v<std::remove_const_t<T>, U>;
+
+        inline static std::pair<size_t, const U *>
+        proxy(const std::array<U, N> &u) noexcept {
+            return std::make_pair<size_t, const U *>(N, u.data());
+        }
+    };
+
+    template <typename U> struct proxyable_traits<std::vector<U>> {
+        inline static constexpr bool is_specialized = true;
+
+        template <typename T>
+        inline static constexpr bool is_proxyable =
+            std::is_same_v<std::remove_const_t<T>, U>;
+
+        inline static std::pair<size_t, const U *>
+        proxy(const std::vector<U> &u) noexcept {
+            return std::make_pair<size_t, const U *>(u.size(), u.data());
+        }
+    };
+
     bool iequals(std::string_view str1, std::string_view str2);
     bool is_true(std::string_view str);
     bool is_false(std::string_view str);
@@ -86,8 +114,9 @@ namespace matplot {
     std::vector<double> iota(double lower_bound, double step,
                              double upper_bound);
 
-    vector_1d transform(const vector_1d &x, std::function<double(double)> fn);
-    vector_1d transform(const vector_1d &x, const vector_1d &y,
+    vector_1d transform(vector_proxy<double> x,
+                        std::function<double(double)> fn);
+    vector_1d transform(vector_proxy<double> x, vector_proxy<double> y,
                         std::function<double(double, double)> fn);
     vector_2d transform(const vector_2d &x, std::function<double(double)> fn);
     vector_2d transform(const vector_2d &x, const vector_2d &y,
@@ -97,11 +126,11 @@ namespace matplot {
 
     std::vector<double> unique(const std::vector<double> &x);
 
-    double min(const std::vector<double> &x);
+    double min(vector_proxy<double> x);
     double min(const std::vector<std::vector<double>> &x);
-    double max(const std::vector<double> &x);
+    double max(vector_proxy<double> x);
     double max(const std::vector<std::vector<double>> &x);
-    std::pair<double, double> minmax(const std::vector<double> &x);
+    std::pair<double, double> minmax(vector_proxy<double> x);
 
     template <typename T> T min(T val1, T val2) {
         return val1 < val2 ? val1 : val2;
@@ -121,8 +150,8 @@ namespace matplot {
                            : max(val2, std::forward<Ts>(vs)...);
     }
 
-    double mean(const std::vector<double> &x);
-    double stddev(const std::vector<double> &x);
+    double mean(vector_proxy<double> x);
+    double stddev(vector_proxy<double> x);
 
     void wait();
 
@@ -130,38 +159,28 @@ namespace matplot {
         3.141592653589793238462643383279502884197169399375105820974944592307816406286;
     constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
 
-    template <class T> std::vector<T> vectorize(const std::vector<T> &result) {
-        return result;
+    template <class T> std::vector<T> vectorize(vector_proxy<T> result) {
+        return std::vector<T>(result.begin(), result.end());
     }
-
     template <class T> std::vector<T> vectorize(const T &result) {
-        return std::vector<T>({result});
+        return vectorize(vector_proxy<T>(result));
     }
 
     template <size_t N, class T>
-    inline std::array<T, N> to_array(std::initializer_list<T> il) {
+    inline std::array<T, N> to_array(vector_proxy<T> v) noexcept {
         std::array<T, N> r;
-        auto r_it = r.begin();
-        auto il_it = il.begin();
-        while (r_it != r.end() && il_it != il.end()) {
-            *r_it = *il_it;
-            ++r_it;
-            ++il_it;
-        }
+        std::copy_n(v.begin(), std::min<size_t>(v.size(), N), r.begin());
         return r;
     }
 
-    template <size_t N, class T>
-    inline std::array<T, N> to_array(const std::vector<T> &v) {
-        std::array<T, N> r;
-        auto r_it = r.begin();
-        auto v_it = v.begin();
-        while (r_it != r.end() && v_it != v.end()) {
-            *r_it = *v_it;
-            ++r_it;
-            ++v_it;
-        }
-        return r;
+    template <size_t N, typename T>
+    inline std::array<T, N> to_array(std::initializer_list<T> v) noexcept {
+        return to_array<N, T>(vector_proxy<T>(v));
+    }
+
+    template <size_t N, typename T>
+    inline std::array<T, N> to_array(const std::vector<T> &v) noexcept {
+        return to_array<N, T>(vector_proxy<T>(v));
     }
 
     namespace detail {
@@ -422,17 +441,17 @@ namespace matplot {
     vector_2d transpose(const vector_2d &z);
 
     std::vector<std::string>
-    tokenize(std::string_view text, std::string_view delimiters = " ',\n\r\t\".!?:");
+    tokenize(std::string_view text,
+             std::string_view delimiters = " ',\n\r\t\".!?:");
 
     std::pair<std::vector<std::string>, std::vector<size_t>>
-    wordcount(const std::vector<std::string> &tokens,
-              const std::vector<std::string> &black_list,
+    wordcount(vector_proxy<std::string> tokens,
+              vector_proxy<std::string> black_list,
               std::string_view delimiters = " ',\n\r\t\".!?:;",
               size_t max_cloud_size = 100);
 
     std::pair<std::vector<std::string>, std::vector<size_t>>
-    wordcount(std::string_view text,
-              const std::vector<std::string> &black_list,
+    wordcount(std::string_view text, vector_proxy<std::string> black_list,
               std::string_view delimiters = " ',\n\r\t\".!?:;",
               size_t max_cloud_size = 100);
 

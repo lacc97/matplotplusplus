@@ -9,13 +9,8 @@
 namespace matplot {
     legend::legend(class axes_type *parent) : legend(parent, {}) {}
 
-    legend::legend(class axes_type *parent,
-                   std::initializer_list<std::string> names)
-        : legend(parent, std::vector(names)) {}
-
-    legend::legend(class axes_type *parent,
-                   const std::vector<std::string> &names)
-        : parent_(parent), strings_(names) {
+    legend::legend(class axes_type *parent, vector_proxy<std::string> names)
+        : parent_(parent), strings_(names.begin(), names.end()) {
         if (names.empty() && !parent_->children().empty()) {
             for (size_t i = 0; i < parent_->children().size(); ++i) {
                 strings_.emplace_back("data" + num2str(i + 1));
@@ -55,8 +50,8 @@ namespace matplot {
 
     std::vector<std::string> &legend::strings() { return strings_; }
 
-    void legend::strings(const std::vector<std::string> &strings) {
-        strings_ = strings;
+    void legend::strings(vector_proxy<std::string> strings) {
+        strings_ = std::vector<std::string>(strings.begin(), strings.end());
         touch();
     }
 
@@ -140,7 +135,8 @@ namespace matplot {
             }
             break;
         }
-        throw std::logic_error("legend::location: could not find the legend location");
+        throw std::logic_error(
+            "legend::location: could not find the legend location");
     }
 
     void legend::location(general_alignment alignment) {

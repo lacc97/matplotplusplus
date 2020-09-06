@@ -25,11 +25,10 @@ namespace matplot {
 
       public:
         explicit labels(class axes_type *parent);
-        labels(class axes_type *parent, const std::vector<double> &x,
-               const std::vector<double> &y,
-               const std::vector<std::string> &labels = {},
-               const std::vector<double> &color = {},
-               const std::vector<double> &sizes = {});
+        labels(class axes_type *parent, vector_proxy<double> x,
+               vector_proxy<double> y, vector_proxy<std::string> labels = {},
+               vector_proxy<double> color = {},
+               vector_proxy<double> sizes = {});
 
         /// If we receive an axes_handle, we can convert it to a raw
         /// pointer because there is no ownership involved here
@@ -60,19 +59,19 @@ namespace matplot {
         class labels &alignment(enum alignment alignment);
 
         const std::vector<double> &x() const;
-        class labels &x(const std::vector<double> &x);
+        class labels &x(vector_proxy<double> x);
 
         const std::vector<double> &y() const;
-        class labels &y(const std::vector<double> &y);
+        class labels &y(vector_proxy<double> y);
 
         const std::vector<std::string> &label_values() const;
-        class labels &label_values(const std::vector<std::string> &labels);
+        class labels &label_values(vector_proxy<std::string> labels);
 
         const std::vector<double> &colors() const;
-        class labels &colors(const std::vector<double> &colors);
+        class labels &colors(vector_proxy<double> colors);
 
         const std::vector<double> &sizes() const;
-        class labels &sizes(const std::vector<double> &sizes);
+        class labels &sizes(vector_proxy<double> sizes);
 
         bool visible() const;
         class labels &visible(bool visible);

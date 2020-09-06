@@ -13,8 +13,9 @@ namespace matplot {
 
     bars::bars(class axes_type *parent) : axes_object(parent) {}
 
-    bars::bars(class axes_type *parent, const std::vector<double> &y)
-        : bars(parent, std::vector<std::vector<double>>({y})) {}
+    bars::bars(class axes_type *parent, vector_proxy<double> y)
+        : bars(parent, std::vector<std::vector<double>>(
+                           {std::vector<double>(y.begin(), y.end())})) {}
 
     bars::bars(class axes_type *parent,
                const std::vector<std::vector<double>> &Y)
@@ -38,13 +39,15 @@ namespace matplot {
         parent_->x_axis().zero_axis(true);
     }
 
-    bars::bars(class axes_type *parent, const std::vector<double> &x,
-               const std::vector<double> &y)
-        : bars(parent, x, std::vector<std::vector<double>>({y})) {}
+    bars::bars(class axes_type *parent, vector_proxy<double> x,
+               vector_proxy<double> y)
+        : bars(parent, x,
+               std::vector<std::vector<double>>(
+                   {std::vector<double>(y.begin(), y.end())})) {}
 
-    bars::bars(class axes_type *parent, const std::vector<double> &x,
+    bars::bars(class axes_type *parent, vector_proxy<double> x,
                const std::vector<std::vector<double>> &Y)
-        : axes_object(parent), x_(x), ys_(Y) {
+        : axes_object(parent), x_(x.begin(), x.end()), ys_(Y) {
         if (parent_->children().empty()) {
             double min_x_diff = x_[1] - x_[0];
             for (size_t i = 1; i < x_.size() - 1; ++i) {
@@ -222,7 +225,7 @@ namespace matplot {
         return *this;
     }
 
-    class bars &bars::face_color(std::initializer_list<float> color) {
+    class bars &bars::face_color(vector_proxy<float> color) {
         if (color.size() == 3) {
             face_color(to_array<3>(color));
         } else {
@@ -259,7 +262,7 @@ namespace matplot {
         return *this;
     }
 
-    class bars &bars::edge_color(std::initializer_list<float> color) {
+    class bars &bars::edge_color(vector_proxy<float> color) {
         if (color.size() == 3) {
             edge_color(to_array<3>(color));
         } else {
@@ -325,8 +328,8 @@ namespace matplot {
 
     std::vector<color_array> &bars::face_colors() { return face_colors_; }
 
-    class bars &bars::face_colors(const std::vector<color_array> &face_colors) {
-        face_colors_ = face_colors;
+    class bars &bars::face_colors(vector_proxy<color_array> face_colors) {
+        face_colors_.assign(face_colors.begin(), face_colors.end());
         touch();
         return *this;
     }

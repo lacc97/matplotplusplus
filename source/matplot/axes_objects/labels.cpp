@@ -10,13 +10,13 @@
 #include <sstream>
 
 namespace matplot {
-    labels::labels(class axes_type *parent, const std::vector<double> &x,
-                   const std::vector<double> &y,
-                   const std::vector<std::string> &labels,
-                   const std::vector<double> &colors,
-                   const std::vector<double> &sizes)
-        : axes_object(parent), x_(x), y_(y), labels_(labels), colors_(colors),
-          sizes_(sizes) {}
+    labels::labels(class axes_type *parent, vector_proxy<double> x,
+                   vector_proxy<double> y, vector_proxy<std::string> labels,
+                   vector_proxy<double> colors, vector_proxy<double> sizes)
+        : axes_object(parent), x_(x.begin(), x.end()), y_(y.begin(), y.end()),
+          labels_(labels.begin(), labels.end()),
+          colors_(colors.begin(), colors.end()),
+          sizes_(sizes.begin(), sizes.end()) {}
 
     std::string labels::set_variables_string() {
         std::string res;
@@ -219,16 +219,16 @@ namespace matplot {
 
     const std::vector<double> &labels::x() const { return x_; }
 
-    class labels &labels::x(const std::vector<double> &x) {
-        x_ = x;
+    class labels &labels::x(vector_proxy<double> x) {
+        x_.assign(x.begin(), x.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &labels::y() const { return y_; }
 
-    class labels &labels::y(const std::vector<double> &y) {
-        y_ = y;
+    class labels &labels::y(vector_proxy<double> y) {
+        y_.assign(y.begin(), y.end());
         touch();
         return *this;
     }
@@ -237,24 +237,24 @@ namespace matplot {
         return labels_;
     }
 
-    class labels &labels::label_values(const std::vector<std::string> &labels) {
-        labels_ = labels;
+    class labels &labels::label_values(vector_proxy<std::string> labels) {
+        labels_.assign(labels.begin(), labels.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &labels::colors() const { return colors_; }
 
-    class labels &labels::colors(const std::vector<double> &colors) {
-        colors_ = colors;
+    class labels &labels::colors(vector_proxy<double> colors) {
+        colors_.assign(colors.begin(), colors.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &labels::sizes() const { return sizes_; }
 
-    class labels &labels::sizes(const std::vector<double> &sizes) {
-        sizes_ = sizes;
+    class labels &labels::sizes(vector_proxy<double> sizes) {
+        sizes_.assign(sizes.begin(), sizes.end());
         touch();
         return *this;
     }

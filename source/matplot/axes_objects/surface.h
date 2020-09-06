@@ -108,8 +108,7 @@ namespace matplot {
         class surface &contour_levels(size_t contour_levels);
 
         const std::vector<double> &contour_values() const;
-        class surface &
-        contour_values(const std::vector<double> &contour_values);
+        class surface &contour_values(vector_proxy<double> contour_values);
 
         bool contour_text() const;
         class surface &contour_text(bool contour_text);

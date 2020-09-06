@@ -9,7 +9,7 @@ namespace matplot {
     /// Histogram count with custom binning and custom normalization
     /// \return Pair with <values per bin, edges>
     std::pair<std::vector<double>, std::vector<double>>
-    histcounts(const std::vector<double> &data,
+    histcounts(vector_proxy<double> data,
                enum histogram::binning_algorithm binning_alg,
                enum histogram::normalization normalization_alg) {
         double minx = *std::min_element(data.begin(), data.end());
@@ -26,7 +26,7 @@ namespace matplot {
     /// Histogram count with automatic binning and custom normalization
     /// \return pair with <values,edges>
     std::pair<std::vector<double>, std::vector<double>>
-    histcounts(const std::vector<double> &data,
+    histcounts(vector_proxy<double> data,
                enum histogram::normalization normalization_alg) {
         return histcounts(data, histogram::binning_algorithm::automatic,
                           normalization_alg);
@@ -35,7 +35,7 @@ namespace matplot {
     /// Histogram count with fixed number of bins
     /// \return pair with <values,edges>
     std::pair<std::vector<double>, std::vector<double>>
-    histcounts(const std::vector<double> &data, size_t nbins,
+    histcounts(vector_proxy<double> data, size_t nbins,
                enum histogram::normalization normalization_alg) {
         double minx = *std::min_element(data.begin(), data.end());
         double maxx = *std::max_element(data.begin(), data.end());
@@ -51,8 +51,7 @@ namespace matplot {
     /// Histogram count with fixed edges
     /// \return normalized values for each edge
     std::vector<double>
-    histcounts(const std::vector<double> &data,
-               const std::vector<double> &edges,
+    histcounts(vector_proxy<double> data, vector_proxy<double> edges,
                enum histogram::normalization normalization_alg) {
         auto bin_counts = histogram::histogram_count(data, edges);
         return histogram::histogram_normalize(bin_counts, edges, data.size(),
@@ -62,8 +61,8 @@ namespace matplot {
     /// Normalize the number of points in a bin
     std::vector<std::vector<double>>
     histnormalize2(const std::vector<std::vector<size_t>> &bin_count,
-                   const std::vector<double> &xbin_edges,
-                   const std::vector<double> &ybin_edges, size_t data_size,
+                   vector_proxy<double> xbin_edges,
+                   vector_proxy<double> ybin_edges, size_t data_size,
                    enum histogram::normalization normalization_algorithm) {
         std::vector<std::vector<double>> values(
             bin_count.size(), std::vector<double>(bin_count[0].size(), 0));
@@ -159,10 +158,10 @@ namespace matplot {
     }
 
     /// Count number of points in each bin defined by the 2 dimensional edges
-    std::vector<std::vector<double>> histcounts2(
-        const std::vector<double> &x_data, const std::vector<double> &y_data,
-        const std::vector<double> &x_edges, const std::vector<double> &y_edges,
-        enum histogram::normalization normalization_algorithm) {
+    std::vector<std::vector<double>>
+    histcounts2(vector_proxy<double> x_data, vector_proxy<double> y_data,
+                vector_proxy<double> x_edges, vector_proxy<double> y_edges,
+                enum histogram::normalization normalization_algorithm) {
         std::vector<std::vector<size_t>> bin_counts(
             x_edges.size() - 1, std::vector<size_t>(y_edges.size() - 1, 0));
         for (size_t i = 0; i < x_data.size(); ++i) {

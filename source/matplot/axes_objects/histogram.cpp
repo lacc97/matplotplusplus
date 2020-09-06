@@ -17,10 +17,11 @@ namespace matplot {
         }
     }
 
-    histogram::histogram(class axes_type *parent,
-                         const std::vector<double> &data, size_t n_bins,
+    histogram::histogram(class axes_type *parent, vector_proxy<double> data,
+                         size_t n_bins,
                          enum histogram::normalization normalization_alg)
-        : axes_object(parent), data_(data), num_bins_(n_bins),
+        : axes_object(parent), data_(data.begin(), data.end()),
+          num_bins_(n_bins),
           binning_mode_{binning_mode_type::use_fixed_num_bins},
           normalization_{normalization_alg} {
         if (parent_->y_axis().limits_mode_auto()) {
@@ -28,23 +29,23 @@ namespace matplot {
         }
     }
 
-    histogram::histogram(class axes_type *parent,
-                         const std::vector<double> &data,
-                         const std::vector<double> &edges,
+    histogram::histogram(class axes_type *parent, vector_proxy<double> data,
+                         vector_proxy<double> edges,
                          enum histogram::normalization normalization_alg)
-        : axes_object(parent), data_(data),
-          bin_edges_(edges), binning_mode_{binning_mode_type::use_fixed_edges},
+        : axes_object(parent), data_(data.begin(), data.end()),
+          bin_edges_(edges.begin(), edges.end()),
+          binning_mode_{binning_mode_type::use_fixed_edges},
           normalization_{normalization_alg} {
         if (parent_->y_axis().limits_mode_auto()) {
             parent_->y_axis().limits({0, inf});
         }
     }
 
-    histogram::histogram(class axes_type *parent,
-                         const std::vector<double> &data,
+    histogram::histogram(class axes_type *parent, vector_proxy<double> data,
                          binning_algorithm algorithm,
                          enum histogram::normalization normalization_alg)
-        : axes_object(parent), data_(data), algorithm_(algorithm),
+        : axes_object(parent), data_(data.begin(), data.end()),
+          algorithm_(algorithm),
           binning_mode_{binning_mode_type::use_algorithm},
           normalization_{normalization_alg} {
         if (parent_->y_axis().limits_mode_auto()) {
@@ -356,7 +357,7 @@ namespace matplot {
         }
     }
 
-    std::vector<double> histogram::scotts_rule(const std::vector<double> &x,
+    std::vector<double> histogram::scotts_rule(vector_proxy<double> x,
                                                double minx, double maxx,
                                                bool hard_limits) {
         double binwidth =
@@ -370,9 +371,8 @@ namespace matplot {
         }
     }
 
-    std::vector<double> histogram::fd_rule(const std::vector<double> &x,
-                                           double minx, double maxx,
-                                           bool hard_limits) {
+    std::vector<double> histogram::fd_rule(vector_proxy<double> x, double minx,
+                                           double maxx, bool hard_limits) {
         size_t n = x.size();
         double xrange = *std::max_element(x.begin(), x.end()) -
                         *std::min_element(x.begin(), x.end());
@@ -381,7 +381,7 @@ namespace matplot {
         if (iqr_not_too_small) {
             size_t q1_index = n * 0.25;
             size_t q3_index = n * 0.75;
-            auto x_copy = x;
+            std::vector<double> x_copy(x.begin(), x.end());
             std::nth_element(x_copy.begin(), x_copy.begin() + q1_index,
                              x_copy.end());
             std::nth_element(x_copy.begin(), x_copy.begin() + q3_index,
@@ -399,7 +399,7 @@ namespace matplot {
         }
     }
 
-    std::vector<double> histogram::integers_rule(const std::vector<double> &x,
+    std::vector<double> histogram::integers_rule(vector_proxy<double> x,
                                                  double minx, double maxx,
                                                  bool hard_limits) {
         constexpr size_t max_num_of_bins = 65536;
@@ -448,7 +448,7 @@ namespace matplot {
         }
     }
 
-    std::vector<double> histogram::sqrt_rule(const std::vector<double> &x,
+    std::vector<double> histogram::sqrt_rule(vector_proxy<double> x,
                                              double minx, double maxx,
                                              bool hard_limits) {
         size_t nbins = std::max(ceil(log2(x.size()) + 1.), 1.);
@@ -464,7 +464,7 @@ namespace matplot {
         }
     }
 
-    std::vector<double> histogram::sturges_rule(const std::vector<double> &x,
+    std::vector<double> histogram::sturges_rule(vector_proxy<double> x,
                                                 double minx, double maxx,
                                                 bool hard_limits) {
         size_t nbins = std::max(ceil(log2(x.size()) + 1.), 1.);
@@ -480,7 +480,7 @@ namespace matplot {
         }
     }
 
-    std::vector<double> histogram::automatic_rule(const std::vector<double> &x,
+    std::vector<double> histogram::automatic_rule(vector_proxy<double> x,
                                                   double minx, double maxx,
                                                   bool hard_limits) {
         double xrange = maxx - minx;
@@ -494,10 +494,10 @@ namespace matplot {
         }
     }
 
-    std::vector<double>
-    histogram::histogram_edges(const std::vector<double> &data, double minx,
-                               double maxx, binning_algorithm algorithm,
-                               bool hard_limits) {
+    std::vector<double> histogram::histogram_edges(vector_proxy<double> data,
+                                                   double minx, double maxx,
+                                                   binning_algorithm algorithm,
+                                                   bool hard_limits) {
         switch (algorithm) {
         case binning_algorithm::automatic:
             return automatic_rule(data, minx, maxx, hard_limits);
@@ -512,12 +512,12 @@ namespace matplot {
         case binning_algorithm::sqrt:
             return sqrt_rule(data, minx, maxx, hard_limits);
         }
-        throw std::logic_error("histogram::histrogram_edges: could not find the binning algorithm");
+        throw std::logic_error("histogram::histrogram_edges: could not find "
+                               "the binning algorithm");
     }
 
-    std::vector<size_t>
-    histogram::histogram_count(const std::vector<double> &data,
-                               const std::vector<double> &edges) {
+    std::vector<size_t> histogram::histogram_count(vector_proxy<double> data,
+                                                   vector_proxy<double> edges) {
         std::vector<size_t> bin_counts(edges.size() - 1, 0);
         for (const double &v : data) {
             // find first edge that does not compare less than v
@@ -534,11 +534,9 @@ namespace matplot {
         return bin_counts;
     }
 
-    std::vector<double>
-    histogram::histogram_normalize(const std::vector<size_t> &bin_count,
-                                   const std::vector<double> &bin_edges,
-                                   size_t data_size,
-                                   enum normalization normalization_algorithm) {
+    std::vector<double> histogram::histogram_normalize(
+        vector_proxy<size_t> bin_count, vector_proxy<double> bin_edges,
+        size_t data_size, enum normalization normalization_algorithm) {
         std::vector<double> values(bin_count.size());
         switch (normalization_algorithm) {
         case normalization::count:
@@ -592,16 +590,16 @@ namespace matplot {
 
     const std::vector<double> &histogram::data() const { return data_; }
 
-    class histogram &histogram::data(const std::vector<double> &data) {
-        data_ = data;
+    class histogram &histogram::data(vector_proxy<double> data) {
+        data_.assign(data.begin(), data.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &histogram::values() const { return values_; }
 
-    class histogram &histogram::values(const std::vector<double> &values) {
-        values_ = values;
+    class histogram &histogram::values(vector_proxy<double> values) {
+        values_.assign(values.begin(), values.end());
         touch();
         return *this;
     }
@@ -610,9 +608,8 @@ namespace matplot {
         return bin_counts_;
     }
 
-    class histogram &
-    histogram::bin_counts(const std::vector<size_t> &bin_counts) {
-        bin_counts_ = bin_counts;
+    class histogram &histogram::bin_counts(vector_proxy<size_t> bin_counts) {
+        bin_counts_.assign(bin_counts.begin(), bin_counts.end());
         touch();
         return *this;
     }
@@ -641,9 +638,8 @@ namespace matplot {
         return bin_edges_;
     }
 
-    class histogram &
-    histogram::bin_edges(const std::vector<double> &bin_edges) {
-        bin_edges_ = bin_edges;
+    class histogram &histogram::bin_edges(vector_proxy<double> bin_edges) {
+        bin_edges_.assign(bin_edges.begin(), bin_edges.end());
         values_.clear();
         binning_mode_ = binning_mode_type::use_fixed_edges;
         touch();

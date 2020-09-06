@@ -18,8 +18,7 @@ namespace matplot {
     figure_type::figure_type(size_t index) : figure_type(index, true) {}
 
     figure_type::figure_type(size_t index, bool quiet_mode)
-        : number_(index), quiet_mode_(quiet_mode) {
-    }
+        : number_(index), quiet_mode_(quiet_mode) {}
 
 #ifdef MATPLOT_BUILD_FOR_DOCUMENTATION_IMAGES
     figure_type::~figure_type() { save("example.svg", "svg"); }
@@ -740,8 +739,9 @@ namespace matplot {
     }
 
     void figure_type::children(
-        const std::vector<std::shared_ptr<class axes_type>> &children) {
-        children_ = children;
+        vector_proxy<std::shared_ptr<class axes_type>> children) {
+        children_ = std::vector<std::shared_ptr<class axes_type>>(
+            children.begin(), children.end());
     }
 
     std::tuple<std::vector<std::vector<scatter_handle>>,

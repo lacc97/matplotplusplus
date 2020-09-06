@@ -8,6 +8,7 @@
 #include <array>
 #include <matplot/util/handle_types.h>
 #include <matplot/util/keywords.h>
+#include <matplot/util/vector_proxy.h>
 #include <string>
 #include <vector>
 
@@ -25,7 +26,8 @@ namespace matplot {
         explicit axis_type(class axes_type *parent);
         explicit axis_type(class axes_type *parent, bool visible);
         axis_type(class axes_type *parent, double min, double max);
-        axis_type(class axes_type *parent, double min, double max, bool visible);
+        axis_type(class axes_type *parent, double min, double max,
+                  bool visible);
 
       public:
         void touch();
@@ -64,13 +66,13 @@ namespace matplot {
         /// This might be tick values provided by the user
         /// or tick values calculated automatically for the range
         const std::vector<double> &tick_values() const;
-        class axis_type &tick_values(const std::vector<double> &tick_values);
+        class axis_type &tick_values(vector_proxy<double> tick_values);
 
         /// Get tick values
         /// This might be tick labels provided by the user
         /// or tick labels according to a format
         const std::vector<std::string> &ticklabels() const;
-        class axis_type &ticklabels(const std::vector<std::string> &ticklabels);
+        class axis_type &ticklabels(vector_proxy<std::string> ticklabels);
 
         bool ticklabels_mode() const;
         class axis_type &ticklabels_mode(bool ticklabels_mode);

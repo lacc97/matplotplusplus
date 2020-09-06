@@ -18,12 +18,11 @@ namespace matplot {
     class circles : public axes_object {
       public:
         explicit circles(class axes_type *parent);
-        circles(class axes_type *parent, const std::vector<double> &x,
-                const std::vector<double> &y,
-                const std::vector<double> &radius = {},
-                const std::vector<double> &start_angle = {},
-                const std::vector<double> &end_angle = {},
-                const std::vector<double> &color = {});
+        circles(class axes_type *parent, vector_proxy<double> x,
+                vector_proxy<double> y, vector_proxy<double> radius = {},
+                vector_proxy<double> start_angle = {},
+                vector_proxy<double> end_angle = {},
+                vector_proxy<double> color = {});
 
         /// If we receive an axes_handle, we can convert it to a raw
         /// pointer because there is no ownership involved here
@@ -47,27 +46,27 @@ namespace matplot {
       public /* getters and setters */:
         const std::vector<double> &x() const;
 
-        class circles &x(const std::vector<double> &x);
+        class circles &x(vector_proxy<double> x);
 
         const std::vector<double> &y() const;
 
-        class circles &y(const std::vector<double> &y);
+        class circles &y(vector_proxy<double> y);
 
         const std::vector<double> &radius() const;
 
-        class circles &radius(const std::vector<double> &radius);
+        class circles &radius(vector_proxy<double> radius);
 
         const std::vector<double> &start_angle() const;
 
-        class circles &start_angle(const std::vector<double> &start_angle);
+        class circles &start_angle(vector_proxy<double> start_angle);
 
         const std::vector<double> &end_angle() const;
 
-        class circles &end_angle(const std::vector<double> &end_angle);
+        class circles &end_angle(vector_proxy<double> end_angle);
 
         const std::vector<double> &color() const;
 
-        class circles &color(const std::vector<double> &color);
+        class circles &color(vector_proxy<double> color);
 
         const labels_handle &labels() const;
 

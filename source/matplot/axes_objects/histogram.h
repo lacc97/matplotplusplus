@@ -43,15 +43,15 @@ namespace matplot {
 
       public:
         explicit histogram(class axes_type *parent);
-        histogram(class axes_type *parent, const std::vector<double> &data,
+        histogram(class axes_type *parent, vector_proxy<double> data,
                   size_t n_bins,
                   enum histogram::normalization normalization_alg =
                       histogram::normalization::count);
-        histogram(class axes_type *parent, const std::vector<double> &data,
-                  const std::vector<double> &edges,
+        histogram(class axes_type *parent, vector_proxy<double> data,
+                  vector_proxy<double> edges,
                   enum histogram::normalization normalization_alg =
                       histogram::normalization::count);
-        histogram(class axes_type *parent, const std::vector<double> &data,
+        histogram(class axes_type *parent, vector_proxy<double> data,
                   binning_algorithm algorithm = binning_algorithm::automatic,
                   histogram::normalization normalization_alg =
                       histogram::normalization::count);
@@ -90,31 +90,29 @@ namespace matplot {
 
         /// Find appropriate edges with a given algorithm
         static std::vector<double> histogram_edges(
-            const std::vector<double> &data, double minx, double maxx,
+            vector_proxy<double> data, double minx, double maxx,
             binning_algorithm algorithm = binning_algorithm::automatic,
             bool hard_limits = false);
 
         /// Count points within each pair of edges
-        static std::vector<size_t>
-        histogram_count(const std::vector<double> &values,
-                        const std::vector<double> &edges);
+        static std::vector<size_t> histogram_count(vector_proxy<double> values,
+                                                   vector_proxy<double> edges);
 
         /// Normalize the instagram count
         static std::vector<double>
-        histogram_normalize(const std::vector<size_t> &bin_count,
-                            const std::vector<double> &bin_edges,
-                            size_t data_size,
+        histogram_normalize(vector_proxy<size_t> bin_count,
+                            vector_proxy<double> bin_edges, size_t data_size,
                             enum normalization normalization_algorithm);
 
       public /* getters and setters */:
         const std::vector<double> &data() const;
-        class histogram &data(const std::vector<double> &data);
+        class histogram &data(vector_proxy<double> data);
 
         const std::vector<double> &values() const;
-        class histogram &values(const std::vector<double> &values);
+        class histogram &values(vector_proxy<double> values);
 
         const std::vector<size_t> &bin_counts() const;
-        class histogram &bin_counts(const std::vector<size_t> &bin_counts);
+        class histogram &bin_counts(vector_proxy<size_t> bin_counts);
 
         size_t num_bins();
         class histogram &num_bins(size_t num_bins);
@@ -123,7 +121,7 @@ namespace matplot {
         class histogram &algorithm(binning_algorithm algorithm);
 
         std::vector<double> &bin_edges();
-        class histogram &bin_edges(const std::vector<double> &bin_edges);
+        class histogram &bin_edges(vector_proxy<double> bin_edges);
 
         double bin_width() const;
         class histogram &bin_width(double bin_width);
@@ -175,22 +173,21 @@ namespace matplot {
         class histogram &stairs_only(bool stairs_only);
 
         /// Algorithms to determine histogram edges
-        static std::vector<double> scotts_rule(const std::vector<double> &x,
+        static std::vector<double> scotts_rule(vector_proxy<double> x,
                                                double minx, double maxx,
                                                bool hard_limits);
-        static std::vector<double> fd_rule(const std::vector<double> &x,
-                                           double minx, double maxx,
-                                           bool hard_limits);
-        static std::vector<double> integers_rule(const std::vector<double> &x,
+        static std::vector<double> fd_rule(vector_proxy<double> x, double minx,
+                                           double maxx, bool hard_limits);
+        static std::vector<double> integers_rule(vector_proxy<double> x,
                                                  double minx, double maxx,
                                                  bool hard_limits);
-        static std::vector<double> sqrt_rule(const std::vector<double> &x,
+        static std::vector<double> sqrt_rule(vector_proxy<double> x,
                                              double minx, double maxx,
                                              bool hard_limits);
-        static std::vector<double> sturges_rule(const std::vector<double> &x,
+        static std::vector<double> sturges_rule(vector_proxy<double> x,
                                                 double minx, double maxx,
                                                 bool hard_limits);
-        static std::vector<double> automatic_rule(const std::vector<double> &x,
+        static std::vector<double> automatic_rule(vector_proxy<double> x,
                                                   double minx, double maxx,
                                                   bool hard_limits);
 

@@ -11,10 +11,10 @@
 namespace matplot {
     box_chart::box_chart(class axes_type *parent) : axes_object(parent) {}
 
-    box_chart::box_chart(class axes_type *parent,
-                         const std::vector<double> &y_data,
-                         const std::vector<double> &groups)
-        : axes_object(parent), y_data_(y_data), x_data_(groups) {}
+    box_chart::box_chart(class axes_type *parent, vector_proxy<double> y_data,
+                         vector_proxy<double> groups)
+        : axes_object(parent), y_data_(y_data.begin(), y_data.end()),
+          x_data_(groups.begin(), groups.end()) {}
 
     std::string box_chart::plot_string() {
         maybe_update_face_color();
@@ -168,16 +168,16 @@ namespace matplot {
 
     const std::vector<double> &box_chart::y_data() const { return y_data_; }
 
-    class box_chart &box_chart::y_data(const std::vector<double> &y_data) {
-        y_data_ = y_data;
+    class box_chart &box_chart::y_data(vector_proxy<double> y_data) {
+        y_data_.assign(y_data.begin(), y_data.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &box_chart::x_data() const { return x_data_; }
 
-    class box_chart &box_chart::x_data(const std::vector<double> &x_data) {
-        x_data_ = x_data;
+    class box_chart &box_chart::x_data(vector_proxy<double> x_data) {
+        x_data_.assign(x_data.begin(), x_data.end());
         touch();
         return *this;
     }

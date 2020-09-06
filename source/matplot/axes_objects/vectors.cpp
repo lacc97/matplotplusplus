@@ -12,41 +12,41 @@
 namespace matplot {
     vectors::vectors(class axes_type *parent) : axes_object(parent) {}
 
-    vectors::vectors(class axes_type *parent, const std::vector<double> &v_data,
+    vectors::vectors(class axes_type *parent, vector_proxy<double> v_data,
                      std::string_view line_spec)
-        : axes_object(parent), v_data_(v_data), line_spec_(this, line_spec) {}
-
-    vectors::vectors(class axes_type *parent, const std::vector<double> &u_data,
-                     const std::vector<double> &v_data,
-                     std::string_view line_spec)
-        : axes_object(parent), u_data_(u_data), v_data_(v_data),
+        : axes_object(parent), v_data_(v_data.begin(), v_data.end()),
           line_spec_(this, line_spec) {}
 
-    vectors::vectors(class axes_type *parent, const std::vector<double> &u_data,
-                     const std::vector<double> &v_data,
-                     const std::vector<double> &w_data,
-                     std::string_view line_spec)
-        : axes_object(parent), u_data_(u_data), v_data_(v_data),
-          w_data_(w_data), line_spec_(this, line_spec) {}
+    vectors::vectors(class axes_type *parent, vector_proxy<double> u_data,
+                     vector_proxy<double> v_data, std::string_view line_spec)
+        : axes_object(parent), u_data_(u_data.begin(), u_data.end()),
+          v_data_(v_data.begin(), v_data.end()), line_spec_(this, line_spec) {}
 
-    vectors::vectors(class axes_type *parent, const std::vector<double> &x_data,
-                     const std::vector<double> &y_data,
-                     const std::vector<double> &u_data,
-                     const std::vector<double> &v_data,
+    vectors::vectors(class axes_type *parent, vector_proxy<double> u_data,
+                     vector_proxy<double> v_data, vector_proxy<double> w_data,
                      std::string_view line_spec)
-        : axes_object(parent), x_data_(x_data), y_data_(y_data),
-          u_data_(u_data), v_data_(v_data), line_spec_(this, line_spec) {}
+        : axes_object(parent), u_data_(u_data.begin(), u_data.end()),
+          v_data_(v_data.begin(), v_data.end()),
+          w_data_(w_data.begin(), w_data.end()), line_spec_(this, line_spec) {}
 
-    vectors::vectors(class axes_type *parent, const std::vector<double> &x_data,
-                     const std::vector<double> &y_data,
-                     const std::vector<double> &z_data,
-                     const std::vector<double> &u_data,
-                     const std::vector<double> &v_data,
-                     const std::vector<double> &w_data,
-                     std::string_view line_spec)
-        : axes_object(parent), x_data_(x_data), y_data_(y_data),
-          z_data_(z_data), u_data_(u_data), v_data_(v_data), w_data_(w_data),
-          line_spec_(this, line_spec) {}
+    vectors::vectors(class axes_type *parent, vector_proxy<double> x_data,
+                     vector_proxy<double> y_data, vector_proxy<double> u_data,
+                     vector_proxy<double> v_data, std::string_view line_spec)
+        : axes_object(parent), x_data_(x_data.begin(), x_data.end()),
+          y_data_(y_data.begin(), y_data.end()),
+          u_data_(u_data.begin(), u_data.end()),
+          v_data_(v_data.begin(), v_data.end()), line_spec_(this, line_spec) {}
+
+    vectors::vectors(class axes_type *parent, vector_proxy<double> x_data,
+                     vector_proxy<double> y_data, vector_proxy<double> z_data,
+                     vector_proxy<double> u_data, vector_proxy<double> v_data,
+                     vector_proxy<double> w_data, std::string_view line_spec)
+        : axes_object(parent), x_data_(x_data.begin(), x_data.end()),
+          y_data_(y_data.begin(), y_data.end()),
+          z_data_(z_data.begin(), z_data.end()),
+          u_data_(u_data.begin(), u_data.end()),
+          v_data_(v_data.begin(), v_data.end()),
+          w_data_(w_data.begin(), w_data.end()), line_spec_(this, line_spec) {}
 
     std::string vectors::plot_string() {
         maybe_update_line_spec();
@@ -261,24 +261,24 @@ namespace matplot {
 
     const std::vector<double> &vectors::y_data() const { return y_data_; }
 
-    class vectors &vectors::y_data(const std::vector<double> &y_data) {
-        y_data_ = y_data;
+    class vectors &vectors::y_data(vector_proxy<double> y_data) {
+        y_data_.assign(y_data.begin(), y_data.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &vectors::x_data() const { return x_data_; }
 
-    class vectors &vectors::x_data(const std::vector<double> &x_data) {
-        x_data_ = x_data;
+    class vectors &vectors::x_data(vector_proxy<double> x_data) {
+        x_data_.assign(x_data.begin(), x_data.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &vectors::z_data() const { return z_data_; }
 
-    class vectors &vectors::z_data(const std::vector<double> &z_data) {
-        z_data_ = z_data;
+    class vectors &vectors::z_data(vector_proxy<double> z_data) {
+        z_data_.assign(z_data.begin(), z_data.end());
         touch();
         return *this;
     }
@@ -288,8 +288,8 @@ namespace matplot {
     }
 
     class vectors &
-    vectors::marker_indices(const std::vector<size_t> &marker_indices) {
-        marker_indices_ = marker_indices;
+    vectors::marker_indices(vector_proxy<size_t> marker_indices) {
+        marker_indices_.assign(marker_indices.begin(), marker_indices.end());
         touch();
         return *this;
     }
@@ -319,22 +319,13 @@ namespace matplot {
 
     float vectors::marker_size() const { return line_spec().marker_size(); }
 
-    class vectors &vectors::marker_size(float size) {
-        line_spec().marker_size(size);
-        return *this;
-    }
-
-    class vectors &vectors::marker_size(const std::vector<float> &size_vector) {
-        marker_sizes_ = size_vector;
-        touch();
-        return *this;
-    }
-
-    class vectors &
-    vectors::marker_size(const std::vector<double> &size_vector) {
-        std::vector<float> size_vector_float(size_vector.begin(),
-                                             size_vector.end());
-        marker_size(size_vector_float);
+    class vectors &vectors::marker_size(vector_proxy<double> size_vector) {
+        if (size_vector.size() == 1) {
+            line_spec().marker_size(size_vector[0]);
+        } else {
+            marker_sizes_.assign(size_vector.begin(), size_vector.end());
+            touch();
+        }
         return *this;
     }
 

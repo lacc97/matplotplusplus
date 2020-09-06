@@ -20,33 +20,26 @@ namespace matplot {
         explicit vectors(class axes_type *parent);
 
         /// Origin xy = (0,0), u = {1,...n}, v = {v_data}
-        vectors(class axes_type *parent, const std::vector<double> &v_data,
+        vectors(class axes_type *parent, vector_proxy<double> v_data,
                 std::string_view line_spec = "");
 
         /// Origin xy = (0,0), u = {u_data}, v = {v_data}
-        vectors(class axes_type *parent, const std::vector<double> &u_data,
-                const std::vector<double> &v_data,
-                std::string_view line_spec = "");
+        vectors(class axes_type *parent, vector_proxy<double> u_data,
+                vector_proxy<double> v_data, std::string_view line_spec = "");
 
         /// Origin xy = (0,0,0), u = {u_data}, v = {v_data}, w = {w_data}
-        vectors(class axes_type *parent, const std::vector<double> &u_data,
-                const std::vector<double> &v_data,
-                const std::vector<double> &w_data,
+        vectors(class axes_type *parent, vector_proxy<double> u_data,
+                vector_proxy<double> v_data, vector_proxy<double> w_data,
                 std::string_view line_spec = "");
 
-        vectors(class axes_type *parent, const std::vector<double> &x_data,
-                const std::vector<double> &y_data,
-                const std::vector<double> &u_data,
-                const std::vector<double> &v_data,
-                std::string_view line_spec = "");
+        vectors(class axes_type *parent, vector_proxy<double> x_data,
+                vector_proxy<double> y_data, vector_proxy<double> u_data,
+                vector_proxy<double> v_data, std::string_view line_spec = "");
 
-        vectors(class axes_type *parent, const std::vector<double> &x_data,
-                const std::vector<double> &y_data,
-                const std::vector<double> &z_data,
-                const std::vector<double> &u_data,
-                const std::vector<double> &v_data,
-                const std::vector<double> &w_data,
-                std::string_view line_spec = "");
+        vectors(class axes_type *parent, vector_proxy<double> x_data,
+                vector_proxy<double> y_data, vector_proxy<double> z_data,
+                vector_proxy<double> u_data, vector_proxy<double> v_data,
+                vector_proxy<double> w_data, std::string_view line_spec = "");
 
         /// If we receive an axes_handle, we can convert it to a raw
         /// pointer because there is no ownership involved here
@@ -72,17 +65,16 @@ namespace matplot {
         class vectors &line_spec(const class line_spec &line_spec);
 
         const std::vector<double> &y_data() const;
-        class vectors &y_data(const std::vector<double> &y_data);
+        class vectors &y_data(vector_proxy<double> y_data);
 
         const std::vector<double> &x_data() const;
-        class vectors &x_data(const std::vector<double> &x_data);
+        class vectors &x_data(vector_proxy<double> x_data);
 
         const std::vector<double> &z_data() const;
-        class vectors &z_data(const std::vector<double> &z_data);
+        class vectors &z_data(vector_proxy<double> z_data);
 
         const std::vector<size_t> &marker_indices() const;
-        class vectors &
-        marker_indices(const std::vector<size_t> &marker_indices);
+        class vectors &marker_indices(vector_proxy<size_t> marker_indices);
 
         bool use_y2() const;
         class vectors &use_y2(bool use_y_2);
@@ -119,9 +111,7 @@ namespace matplot {
         }
 
         float marker_size() const;
-        class vectors &marker_size(float size);
-        class vectors &marker_size(const std::vector<float> &size_vector);
-        class vectors &marker_size(const std::vector<double> &size_vector);
+        class vectors &marker_size(vector_proxy<double> size_vector);
 
         bool marker_face() const;
         class vectors &marker_face(bool size);
@@ -148,8 +138,8 @@ namespace matplot {
             return *this;
         }
 
-        inline class vectors &marker_colors(const std::vector<double> &cs) {
-            marker_colors_ = cs;
+        inline class vectors &marker_colors(vector_proxy<double> cs) {
+            marker_colors_.assign(cs.begin(), cs.end());
             touch();
             return *this;
         }

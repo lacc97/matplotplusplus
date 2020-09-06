@@ -9,6 +9,7 @@
 #include <matplot/util/colors.h>
 #include <matplot/util/handle_types.h>
 #include <matplot/util/popen.h>
+#include <matplot/util/vector_proxy.h>
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -126,8 +127,7 @@ namespace matplot {
 
         /// \brief Get reference to vector with all child axes
         const std::vector<std::shared_ptr<class axes_type>> &children() const;
-        void
-        children(const std::vector<std::shared_ptr<class axes_type>> &children);
+        void children(vector_proxy<std::shared_ptr<class axes_type>> children);
 
       protected:
         static std::array<float, 4>

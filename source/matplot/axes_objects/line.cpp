@@ -12,20 +12,22 @@
 namespace matplot {
     line::line(class axes_type *parent) : axes_object(parent) {}
 
-    line::line(class axes_type *parent, const std::vector<double> &y_data,
+    line::line(class axes_type *parent, vector_proxy<double> y_data,
                std::string_view line_spec)
-        : axes_object(parent), y_data_(y_data), line_spec_(this, line_spec) {}
-
-    line::line(class axes_type *parent, const std::vector<double> &x_data,
-               const std::vector<double> &y_data, std::string_view line_spec)
-        : axes_object(parent), x_data_(x_data), y_data_(y_data),
+        : axes_object(parent), y_data_(y_data.begin(), y_data.end()),
           line_spec_(this, line_spec) {}
 
-    line::line(class axes_type *parent, const std::vector<double> &x_data,
-               const std::vector<double> &y_data,
-               const std::vector<double> &z_data, std::string_view line_spec)
-        : axes_object(parent), x_data_(x_data), y_data_(y_data),
-          z_data_(z_data), line_spec_(this, line_spec) {}
+    line::line(class axes_type *parent, vector_proxy<double> x_data,
+               vector_proxy<double> y_data, std::string_view line_spec)
+        : axes_object(parent), x_data_(x_data.begin(), x_data.end()),
+          y_data_(y_data.begin(), y_data.end()), line_spec_(this, line_spec) {}
+
+    line::line(class axes_type *parent, vector_proxy<double> x_data,
+               vector_proxy<double> y_data, vector_proxy<double> z_data,
+               std::string_view line_spec)
+        : axes_object(parent), x_data_(x_data.begin(), x_data.end()),
+          y_data_(y_data.begin(), y_data.end()),
+          z_data_(z_data.begin(), z_data.end()), line_spec_(this, line_spec) {}
 
     std::vector<line_spec::style_to_plot> line::styles_to_plot() {
         std::vector<line_spec::style_to_plot> result;
@@ -366,24 +368,24 @@ namespace matplot {
 
     const std::vector<double> &line::y_data() const { return y_data_; }
 
-    class line &line::y_data(const std::vector<double> &y_data) {
-        y_data_ = y_data;
+    class line &line::y_data(vector_proxy<double> y_data) {
+        y_data_.assign(y_data.begin(), y_data.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &line::x_data() const { return x_data_; }
 
-    class line &line::x_data(const std::vector<double> &x_data) {
-        x_data_ = x_data;
+    class line &line::x_data(vector_proxy<double> x_data) {
+        x_data_.assign(x_data.begin(), x_data.end());
         touch();
         return *this;
     }
 
     const std::vector<double> &line::z_data() const { return z_data_; }
 
-    class line &line::z_data(const std::vector<double> &z_data) {
-        z_data_ = z_data;
+    class line &line::z_data(vector_proxy<double> z_data) {
+        z_data_.assign(z_data.begin(), z_data.end());
         touch();
         return *this;
     }
@@ -392,9 +394,8 @@ namespace matplot {
         return marker_indices_;
     }
 
-    class line &
-    line::marker_indices(const std::vector<size_t> &marker_indices) {
-        marker_indices_ = marker_indices;
+    class line &line::marker_indices(vector_proxy<size_t> marker_indices) {
+        marker_indices_.assign(marker_indices.begin(), marker_indices.end());
         touch();
         return *this;
     }
@@ -424,21 +425,13 @@ namespace matplot {
 
     float line::marker_size() const { return line_spec().marker_size(); }
 
-    class line &line::marker_size(float size) {
-        line_spec().marker_size(size);
-        return *this;
-    }
-
-    class line &line::marker_size(const std::vector<float> &size_vector) {
-        marker_sizes_ = size_vector;
-        touch();
-        return *this;
-    }
-
-    class line &line::marker_size(const std::vector<double> &size_vector) {
-        std::vector<float> size_vector_float(size_vector.begin(),
-                                             size_vector.end());
-        marker_size(size_vector_float);
+    class line &line::marker_size(vector_proxy<double> size_vector) {
+        if (size_vector.size() == 1) {
+            line_spec().marker_size(size_vector[0]);
+        } else {
+            marker_sizes_.assign(size_vector.begin(), size_vector.end());
+            touch();
+        }
         return *this;
     }
 
@@ -509,7 +502,7 @@ namespace matplot {
     void line::run_draw_commands() {
         // ask axes to draw the line
         maybe_update_line_spec();
-        parent_->draw_path(x_data_,y_data_,line_spec_.color());
+        parent_->draw_path(x_data_, y_data_, line_spec_.color());
     }
 
 } // namespace matplot

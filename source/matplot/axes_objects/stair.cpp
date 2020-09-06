@@ -9,13 +9,12 @@
 namespace matplot {
     stair::stair(class axes_type *parent) : line(parent) {}
 
-    stair::stair(class axes_type *parent, const std::vector<double> &y_data,
+    stair::stair(class axes_type *parent, vector_proxy<double> y_data,
                  std::string_view line_spec)
         : line(parent, y_data, line_spec) {}
 
-    stair::stair(class axes_type *parent, const std::vector<double> &x_data,
-                 const std::vector<double> &y_data,
-                 std::string_view line_spec)
+    stair::stair(class axes_type *parent, vector_proxy<double> x_data,
+                 vector_proxy<double> y_data, std::string_view line_spec)
         : line(parent, x_data, y_data, line_spec) {}
 
     std::vector<line_spec::style_to_plot> stair::styles_to_plot() {

@@ -68,7 +68,8 @@ namespace matplot {
         std::string escaped;
         escaped.reserve(label.size());
 
-        std::regex_replace(std::back_inserter(escaped), label.begin(), label.end(), std::regex("\""), "\\\"");
+        std::regex_replace(std::back_inserter(escaped), label.begin(),
+                           label.end(), std::regex("\""), "\\\"");
 
         return escaped;
     }
@@ -106,7 +107,7 @@ namespace matplot {
 
     std::vector<double> iota(double d1, double d2) { return iota(d1, 1., d2); }
 
-    std::vector<double> transform(const std::vector<double> &x,
+    std::vector<double> transform(vector_proxy<double> x,
                                   std::function<double(double)> fn) {
         std::vector<double> y(x.size());
         for (size_t i = 0; i < y.size(); ++i) {
@@ -125,8 +126,8 @@ namespace matplot {
         }
     }
 
-    std::vector<double> transform(const std::vector<double> &x,
-                                  const std::vector<double> &y,
+    std::vector<double> transform(vector_proxy<double> x,
+                                  vector_proxy<double> y,
                                   std::function<double(double, double)> fn) {
         std::vector<double> z(x.size());
         size_t n = std::min(x.size(), y.size());
@@ -170,7 +171,7 @@ namespace matplot {
         return x_line;
     }
 
-    double max(const std::vector<double> &x) {
+    double max(vector_proxy<double> x) {
         if (x.empty()) {
             return -std::numeric_limits<double>::max();
         } else {
@@ -178,7 +179,9 @@ namespace matplot {
         }
     }
 
-    double min(const std::vector<double> &x) {
+    double min(vector_proxy<double> x) {
+        vector_proxy<double> y(x);
+
         if (x.empty()) {
             return std::numeric_limits<double>::max();
         } else {
@@ -202,7 +205,7 @@ namespace matplot {
         return m;
     }
 
-    std::pair<double, double> minmax(const std::vector<double> &x) {
+    std::pair<double, double> minmax(vector_proxy<double> x) {
         if (x.empty()) {
             return std::make_pair(min(x), max(x));
         } else {
@@ -211,7 +214,7 @@ namespace matplot {
         }
     }
 
-    double mean(const std::vector<double> &x) {
+    double mean(vector_proxy<double> x) {
         double sum = 0;
         for (const double &xi : x) {
             sum += xi / static_cast<double>(x.size());
@@ -219,7 +222,7 @@ namespace matplot {
         return sum;
     }
 
-    double stddev(const std::vector<double> &x) {
+    double stddev(vector_proxy<double> x) {
         double m = mean(x);
         double sum = 0;
         for (const double &xi : x) {
@@ -668,7 +671,8 @@ namespace matplot {
             return image_channels_t{};
         }
         auto [h, w] = size(A[0]);
-        return imresize(A, static_cast<size_t>(h * scale), static_cast<size_t>(w * scale), m);
+        return imresize(A, static_cast<size_t>(h * scale),
+                        static_cast<size_t>(w * scale), m);
     }
 
     void imwrite(const image_channels_t &A, const std::string &filename) {
@@ -786,9 +790,9 @@ namespace matplot {
     }
 
     std::pair<std::vector<std::string>, std::vector<size_t>>
-    wordcount(const std::vector<std::string> &tokens,
-              const std::vector<std::string> &black_list,
-              std::string_view delimiters, size_t max_cloud_size) {
+    wordcount(vector_proxy<std::string> tokens,
+              vector_proxy<std::string> black_list, std::string_view delimiters,
+              size_t max_cloud_size) {
         // count the frequency of each token
         const bool bl_sorted =
             std::is_sorted(black_list.begin(), black_list.end());
@@ -833,8 +837,7 @@ namespace matplot {
     }
 
     std::pair<std::vector<std::string>, std::vector<size_t>>
-    wordcount(std::string_view text,
-              const std::vector<std::string> &black_list,
+    wordcount(std::string_view text, vector_proxy<std::string> black_list,
               std::string_view delimiters, size_t max_cloud_size) {
         auto tokens = tokenize(text);
         return wordcount(tokens, black_list, delimiters, max_cloud_size);

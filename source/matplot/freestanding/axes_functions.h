@@ -27,8 +27,7 @@ namespace matplot {
     axes_handle axes(std::array<float, 4> position);
 
     void hold(bool);
-    void hold(axes_handle, bool);
-    void hold(const std::vector<axes_handle> &axs, bool);
+    void hold(vector_proxy<axes_handle> axs, bool);
 
     void box(bool);
     void box(axes_handle, bool);
@@ -97,8 +96,7 @@ namespace matplot {
     void title(std::string_view str);
     void title(std::string_view str, const color_array &c);
 
-    template <class COLOR_TYPE>
-    void title(std::string_view str, COLOR_TYPE c) {
+    template <class COLOR_TYPE> void title(std::string_view str, COLOR_TYPE c) {
         title(str, to_array(c));
     }
 
@@ -151,23 +149,14 @@ namespace matplot {
     std::string ztickformat();
     std::string ztickformat(axes_handle ax);
 
-    void xticks(const std::vector<double> &ticks);
-    void xticks(axes_handle ax, const std::vector<double> &ticks);
-    void yticks(const std::vector<double> &ticks);
-    void yticks(axes_handle ax, const std::vector<double> &ticks);
-    void y2ticks(const std::vector<double> &ticks);
-    void y2ticks(axes_handle ax, const std::vector<double> &ticks);
-    void zticks(const std::vector<double> &ticks);
-    void zticks(axes_handle ax, const std::vector<double> &ticks);
-
-    void xticks(std::initializer_list<double> ticks);
-    void xticks(axes_handle ax, std::initializer_list<double> ticks);
-    void yticks(std::initializer_list<double> ticks);
-    void yticks(axes_handle ax, std::initializer_list<double> ticks);
-    void y2ticks(std::initializer_list<double> ticks);
-    void y2ticks(axes_handle ax, std::initializer_list<double> ticks);
-    void zticks(std::initializer_list<double> ticks);
-    void zticks(axes_handle ax, std::initializer_list<double> ticks);
+    void xticks(vector_proxy<double> ticks);
+    void xticks(axes_handle ax, vector_proxy<double> ticks);
+    void yticks(vector_proxy<double> ticks);
+    void yticks(axes_handle ax, vector_proxy<double> ticks);
+    void y2ticks(vector_proxy<double> ticks);
+    void y2ticks(axes_handle ax, vector_proxy<double> ticks);
+    void zticks(vector_proxy<double> ticks);
+    void zticks(axes_handle ax, vector_proxy<double> ticks);
 
     void xticks(keyword_automatic_type);
     void xticks(axes_handle ax, keyword_automatic_type);
@@ -178,23 +167,14 @@ namespace matplot {
     void zticks(keyword_automatic_type);
     void zticks(axes_handle ax, keyword_automatic_type);
 
-    void xticklabels(const std::vector<std::string> &ticks);
-    void xticklabels(axes_handle ax, const std::vector<std::string> &ticks);
-    void yticklabels(const std::vector<std::string> &ticks);
-    void yticklabels(axes_handle ax, const std::vector<std::string> &ticks);
-    void y2ticklabels(const std::vector<std::string> &ticks);
-    void y2ticklabels(axes_handle ax, const std::vector<std::string> &ticks);
-    void zticklabels(const std::vector<std::string> &ticks);
-    void zticklabels(axes_handle ax, const std::vector<std::string> &ticks);
-
-    void xticklabels(std::initializer_list<std::string> ticks);
-    void xticklabels(axes_handle ax, std::initializer_list<std::string> ticks);
-    void yticklabels(std::initializer_list<std::string> ticks);
-    void yticklabels(axes_handle ax, std::initializer_list<std::string> ticks);
-    void y2ticklabels(std::initializer_list<std::string> ticks);
-    void y2ticklabels(axes_handle ax, std::initializer_list<std::string> ticks);
-    void zticklabels(std::initializer_list<std::string> ticks);
-    void zticklabels(axes_handle ax, std::initializer_list<std::string> ticks);
+    void xticklabels(vector_proxy<std::string> ticks);
+    void xticklabels(axes_handle ax, vector_proxy<std::string> ticks);
+    void yticklabels(vector_proxy<std::string> ticks);
+    void yticklabels(axes_handle ax, vector_proxy<std::string> ticks);
+    void y2ticklabels(vector_proxy<std::string> ticks);
+    void y2ticklabels(axes_handle ax, vector_proxy<std::string> ticks);
+    void zticklabels(vector_proxy<std::string> ticks);
+    void zticklabels(axes_handle ax, vector_proxy<std::string> ticks);
 
     void xticklabels(keyword_automatic_type);
     void xticklabels(axes_handle ax, keyword_automatic_type);
@@ -233,14 +213,14 @@ namespace matplot {
     void cla(axes_handle);
 
     /// Put legends on the figure
-    legend_handle legend(axes_handle ax, const std::vector<std::string> &names);
-    legend_handle legend(const std::vector<std::string> &names);
+    legend_handle legend(axes_handle ax, vector_proxy<std::string> names);
+    legend_handle legend(vector_proxy<std::string> names);
 
     legend_handle legend(axes_handle ax, bool visible = true);
     legend_handle legend(bool visible = true);
 
-    legend_handle legend(std::vector<axes_object_handle> objs,
-                         const std::vector<std::string> &names);
+    legend_handle legend(vector_proxy<axes_object_handle> objs,
+                         vector_proxy<std::string> names);
 
     // Hackfix for a compiler bug in MSVC
     namespace {
@@ -252,8 +232,7 @@ namespace matplot {
         }
 
         template <typename... Args>
-        legend_handle legend(std::string_view name,
-                             Args const &... next_name) {
+        legend_handle legend(std::string_view name, Args const &... next_name) {
             return legend(gca(), name, next_name...);
         }
     } // namespace
@@ -293,8 +272,7 @@ namespace matplot {
 
     /// Set limits of x and y axes
     void axis(const std::array<double, 4> &limits_x_y);
-    void axis(axes_handle axes_handle, const std::array<double, 4> &limits_x_y);
-    void axis(std::initializer_list<axes_handle> axes_handles,
+    void axis(vector_proxy<axes_handle> axes_handles,
               const std::array<double, 4> &limits_x_y);
 
     /// Make axis visible invisible

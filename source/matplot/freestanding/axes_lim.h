@@ -12,7 +12,7 @@ namespace matplot {
 
     inline void xlim(const std::array<double, 2> &lim) { gca()->xlim(lim); }
 
-    inline void xlim(std::initializer_list<double> lim) {
+    inline void xlim(vector_proxy<double> lim) {
         if (lim.size() >= 2) {
             gca()->xlim(to_array<2>(lim));
         }
@@ -179,57 +179,43 @@ namespace matplot {
         gca()->tlim(x, std::forward<Args>(args)...);
     }
 
-    inline std::array<double, 2> xlim(axes_handle ax) {
-        return ax->xlim();
-    }
+    inline std::array<double, 2> xlim(axes_handle ax) { return ax->xlim(); }
 
     inline void xlim(axes_handle ax, const std::array<double, 2> &lim) {
         ax->xlim(lim);
     }
 
-    inline std::array<double, 2> x2lim(axes_handle ax) {
-        return ax->x2lim();
-    }
+    inline std::array<double, 2> x2lim(axes_handle ax) { return ax->x2lim(); }
 
     inline void x2lim(axes_handle ax, const std::array<double, 2> &lim) {
         ax->x2lim(lim);
     }
 
-    inline std::array<double, 2> ylim(axes_handle ax) {
-        return ax->ylim();
-    }
+    inline std::array<double, 2> ylim(axes_handle ax) { return ax->ylim(); }
 
     inline void ylim(axes_handle ax, const std::array<double, 2> &lim) {
         ax->ylim(lim);
     }
 
-    inline std::array<double, 2> y2lim(axes_handle ax) {
-        return ax->y2lim();
-    }
+    inline std::array<double, 2> y2lim(axes_handle ax) { return ax->y2lim(); }
 
     inline void y2lim(axes_handle ax, const std::array<double, 2> &lim) {
         ax->y2lim(lim);
     }
 
-    inline std::array<double, 2> zlim(axes_handle ax) {
-        return ax->zlim();
-    }
+    inline std::array<double, 2> zlim(axes_handle ax) { return ax->zlim(); }
 
     inline void zlim(axes_handle ax, const std::array<double, 2> &lim) {
         ax->zlim(lim);
     }
 
-    inline std::array<double, 2> rlim(axes_handle ax) {
-        return ax->rlim();
-    }
+    inline std::array<double, 2> rlim(axes_handle ax) { return ax->rlim(); }
 
     inline void rlim(axes_handle ax, const std::array<double, 2> &lim) {
         ax->rlim(lim);
     }
 
-    inline std::array<double, 2> tlim(axes_handle ax) {
-        return ax->tlim();
-    }
+    inline std::array<double, 2> tlim(axes_handle ax) { return ax->tlim(); }
 
     inline void tlim(axes_handle ax, const std::array<double, 2> &lim) {
         ax->tlim(lim);

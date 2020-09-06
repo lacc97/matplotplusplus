@@ -13,7 +13,8 @@ namespace matplot {
 
     axis_type::axis_type() : axis_type(nullptr, inf, inf) {}
 
-    axis_type::axis_type(class axes_type *parent) : axis_type(parent, inf, inf) {}
+    axis_type::axis_type(class axes_type *parent)
+        : axis_type(parent, inf, inf) {}
 
     axis_type::axis_type(class axes_type *parent, bool visible)
         : axis_type(parent, inf, inf, visible) {}
@@ -21,7 +22,8 @@ namespace matplot {
     axis_type::axis_type(class axes_type *parent, double min, double max)
         : axis_type(parent, min, max, true) {}
 
-    axis_type::axis_type(class axes_type *parent, double min, double max, bool visible)
+    axis_type::axis_type(class axes_type *parent, double min, double max,
+                         bool visible)
         : parent_(parent), limits_({min, max}), visible_(visible) {}
 
     void axis_type::touch() { parent_->touch(); }
@@ -31,7 +33,7 @@ namespace matplot {
             return limits_;
         } else {
             if (!std::isfinite(limits_[0]) || !std::isfinite(limits_[1])) {
-                return {-10,+10};
+                return {-10, +10};
             } else {
                 return limits_;
             }
@@ -168,7 +170,9 @@ namespace matplot {
         return *this;
     }
 
-    bool axis_type::tick_values_automatic() const { return tick_values_automatic_; }
+    bool axis_type::tick_values_automatic() const {
+        return tick_values_automatic_;
+    }
 
     class axis_type &
     axis_type::tick_values_automatic(bool tick_values_automatic) {
@@ -177,7 +181,9 @@ namespace matplot {
         return *this;
     }
 
-    bool axis_type::tick_values_manual() const { return !tick_values_automatic_; }
+    bool axis_type::tick_values_manual() const {
+        return !tick_values_automatic_;
+    }
 
     class axis_type &axis_type::tick_values_manual(bool tick_values_manual) {
         tick_values_automatic_ = !tick_values_manual;
@@ -189,9 +195,8 @@ namespace matplot {
         return tick_values_;
     }
 
-    class axis_type &
-    axis_type::tick_values(const std::vector<double> &tick_values) {
-        tick_values_ = tick_values;
+    class axis_type &axis_type::tick_values(vector_proxy<double> tick_values) {
+        tick_values_.assign(tick_values.begin(), tick_values.end());
         tick_values_automatic_ = false;
         touch();
         return *this;
@@ -202,8 +207,9 @@ namespace matplot {
     }
 
     class axis_type &
-    axis_type::ticklabels(const std::vector<std::string> &ticklabels) {
-        ticklabels_ = ticklabels;
+    axis_type::ticklabels(vector_proxy<std::string> ticklabels) {
+        ticklabels_ =
+            std::vector<std::string>(ticklabels.begin(), ticklabels.end());
         if (ticklabels.empty()) {
             tick_values({});
         }

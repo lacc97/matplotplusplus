@@ -123,7 +123,7 @@ namespace matplot {
         class contours &n_levels(size_t n_levels);
 
         const std::vector<double> &levels() const;
-        class contours &levels(const std::vector<double> &levels);
+        class contours &levels(vector_proxy<double> levels);
 
         bool filled() const;
         class contours &filled(bool filled);

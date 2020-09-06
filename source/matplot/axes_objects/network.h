@@ -23,8 +23,8 @@ namespace matplot {
       public:
         explicit network(class axes_type *parent);
         network(class axes_type *parent,
-                const std::vector<std::pair<size_t, size_t>> &edges,
-                const std::vector<double> &weights, size_t n_vertices,
+                vector_proxy<std::pair<size_t, size_t>> edges,
+                vector_proxy<double> weights, size_t n_vertices,
                 std::string_view line_spec = "");
 
         /// If we receive an axes_handle, we can convert it to a raw
@@ -51,17 +51,16 @@ namespace matplot {
         class network &line_spec(const class line_spec &line_spec);
 
         const std::vector<double> &y_data() const;
-        class network &y_data(const std::vector<double> &y_data);
+        class network &y_data(vector_proxy<double> y_data);
 
         const std::vector<double> &x_data() const;
-        class network &x_data(const std::vector<double> &x_data);
+        class network &x_data(vector_proxy<double> x_data);
 
         const std::vector<double> &z_data() const;
-        class network &z_data(const std::vector<double> &z_data);
+        class network &z_data(vector_proxy<double> z_data);
 
         const std::vector<size_t> &marker_indices() const;
-        class network &
-        marker_indices(const std::vector<size_t> &marker_indices);
+        class network &marker_indices(vector_proxy<size_t> marker_indices);
 
         bool use_y2() const;
         class network &use_y2(bool use_y_2);
@@ -76,7 +75,7 @@ namespace matplot {
         class network &directed(bool directed);
 
         const std::vector<std::string> &edge_labels() const;
-        class network &edge_labels(const std::vector<std::string> &edge_labels);
+        class network &edge_labels(vector_proxy<std::string> edge_labels);
 
         template <class C>
         network &edge_labels(const IterableValues<C> &e_labels) {
@@ -92,7 +91,7 @@ namespace matplot {
         }
 
         const std::vector<std::string> &node_labels() const;
-        class network &node_labels(const std::vector<std::string> &node_labels);
+        class network &node_labels(vector_proxy<std::string> node_labels);
 
         template <class C>
         network &node_labels(const IterableValues<C> &e_labels) {
@@ -108,16 +107,15 @@ namespace matplot {
         }
 
         const std::vector<double> &line_widths() const;
-        class network &line_widths(const std::vector<double> &line_widths);
+        class network &line_widths(vector_proxy<double> line_widths);
 
         const std::vector<std::pair<size_t, size_t>> &edges() const;
-        class network &
-        edges(const std::vector<std::pair<size_t, size_t>> &edges);
+        class network &edges(vector_proxy<std::pair<size_t, size_t>> edges);
 
         class network &n_vertices(size_t n_vertices);
 
         const vector_1d &weights() const;
-        class network &weights(const vector_1d &weights);
+        class network &weights(vector_proxy<double> weights);
 
         layout layout_algorithm() const;
         class network &layout_algorithm(layout layout_algorithm);
@@ -132,7 +130,7 @@ namespace matplot {
         class network &energy_threshold(double energy_threshold);
 
         const std::vector<float> &marker_sizes() const;
-        class network &marker_sizes(const std::vector<float> &marker_sizes);
+        class network &marker_sizes(vector_proxy<float> marker_sizes);
 
         const std::vector<double> &marker_colors() const;
 
@@ -156,9 +154,7 @@ namespace matplot {
         }
 
         float marker_size() const;
-        class network &marker_size(float size);
-        class network &marker_size(const std::vector<float> &size_vector);
-        class network &marker_size(const std::vector<double> &size_vector);
+        class network &marker_size(vector_proxy<double> size_vector);
 
         bool marker_face() const;
         class network &marker_face(bool size);
@@ -190,8 +186,8 @@ namespace matplot {
             return *this;
         }
 
-        inline class network &marker_colors(const std::vector<double> &cs) {
-            marker_colors_ = cs;
+        inline class network &marker_colors(vector_proxy<double> cs) {
+            marker_colors_.assign(cs.begin(), cs.end());
             touch();
             return *this;
         }

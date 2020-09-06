@@ -21,12 +21,12 @@ namespace matplot {
     class bars : public axes_object {
       public:
         explicit bars(class axes_type *parent);
-        bars(class axes_type *parent, const std::vector<double> &y);
+        bars(class axes_type *parent, vector_proxy<double> y);
         bars(class axes_type *parent,
              const std::vector<std::vector<double>> &Y);
-        bars(class axes_type *parent, const std::vector<double> &x,
-             const std::vector<double> &y);
-        bars(class axes_type *parent, const std::vector<double> &x,
+        bars(class axes_type *parent, vector_proxy<double> x,
+             vector_proxy<double> y);
+        bars(class axes_type *parent, vector_proxy<double> x,
              const std::vector<std::vector<double>> &Y);
 
         /// If we receive an axes_handle, we can convert it to a raw
@@ -58,13 +58,13 @@ namespace matplot {
         const color_array &face_color() const;
         class bars &face_color(const color_array &face_color);
         class bars &face_color(const std::array<float, 3> &face_color);
-        class bars &face_color(std::initializer_list<float> face_color);
+        class bars &face_color(vector_proxy<float> face_color);
         class bars &face_color(std::string_view color);
 
         const std::vector<color_array> &face_colors() const;
         std::vector<color_array> &face_colors();
 
-        class bars &face_colors(const std::vector<color_array> &face_colors);
+        class bars &face_colors(vector_proxy<color_array> face_colors);
 
         bool manual_face_color() const;
         class bars &manual_face_color(bool manual_face_color);
@@ -72,7 +72,7 @@ namespace matplot {
         const color_array &edge_color() const;
         class bars &edge_color(const color_array &edge_color);
         class bars &edge_color(const std::array<float, 3> &edge_color);
-        class bars &edge_color(std::initializer_list<float> face_color);
+        class bars &edge_color(vector_proxy<float> face_color);
         class bars &edge_color(std::string_view edge_color);
 
         const line_spec &edge_style() const;

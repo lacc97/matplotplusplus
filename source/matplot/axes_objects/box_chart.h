@@ -28,8 +28,8 @@ namespace matplot {
 
       public:
         explicit box_chart(class axes_type *parent);
-        box_chart(class axes_type *parent, const std::vector<double> &y_data,
-                  const std::vector<double> &groups = {});
+        box_chart(class axes_type *parent, vector_proxy<double> y_data,
+                  vector_proxy<double> groups = {});
         //        box_chart(class xlim* parent, const std::vector<double>& data,
         //        const std::vector<double>& edges, enum
         //        box_chart::normalization normalization_alg =
@@ -62,11 +62,11 @@ namespace matplot {
       public /* getters and setters */:
         const std::vector<double> &y_data() const;
 
-        class box_chart &y_data(const std::vector<double> &y_data);
+        class box_chart &y_data(vector_proxy<double> y_data);
 
         const std::vector<double> &x_data() const;
 
-        class box_chart &x_data(const std::vector<double> &x_data);
+        class box_chart &x_data(vector_proxy<double> x_data);
 
         const color_array &face_color() const;
 

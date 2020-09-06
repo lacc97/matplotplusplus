@@ -28,11 +28,10 @@ namespace matplot {
 
       public:
         explicit stair(class axes_type *parent);
-        stair(class axes_type *parent, const std::vector<double> &y_data,
+        stair(class axes_type *parent, vector_proxy<double> y_data,
               std::string_view line_spec = "");
-        stair(class axes_type *parent, const std::vector<double> &x_data,
-              const std::vector<double> &y_data,
-              std::string_view line_spec = "");
+        stair(class axes_type *parent, vector_proxy<double> x_data,
+              vector_proxy<double> y_data, std::string_view line_spec = "");
 
         /// If we receive an axes_handle, we can convert it to a raw
         /// pointer because there is no ownership involved here

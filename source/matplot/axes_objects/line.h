@@ -17,14 +17,12 @@ namespace matplot {
     class line : public axes_object {
       public:
         explicit line(class axes_type *parent);
-        line(class axes_type *parent, const std::vector<double> &y_data,
+        line(class axes_type *parent, vector_proxy<double> y_data,
              std::string_view line_spec = "");
-        line(class axes_type *parent, const std::vector<double> &x_data,
-             const std::vector<double> &y_data,
-             std::string_view line_spec = "");
-        line(class axes_type *parent, const std::vector<double> &x_data,
-             const std::vector<double> &y_data,
-             const std::vector<double> &z_data,
+        line(class axes_type *parent, vector_proxy<double> x_data,
+             vector_proxy<double> y_data, std::string_view line_spec = "");
+        line(class axes_type *parent, vector_proxy<double> x_data,
+             vector_proxy<double> y_data, vector_proxy<double> z_data,
              std::string_view line_spec = "");
 
         /// If we receive an axes_handle, we can convert it to a raw
@@ -54,16 +52,16 @@ namespace matplot {
         class line &line_spec(const class line_spec &line_spec);
 
         const std::vector<double> &y_data() const;
-        class line &y_data(const std::vector<double> &y_data);
+        class line &y_data(vector_proxy<double> y_data);
 
         const std::vector<double> &x_data() const;
-        class line &x_data(const std::vector<double> &x_data);
+        class line &x_data(vector_proxy<double> x_data);
 
         const std::vector<double> &z_data() const;
-        class line &z_data(const std::vector<double> &z_data);
+        class line &z_data(vector_proxy<double> z_data);
 
         const std::vector<size_t> &marker_indices() const;
-        class line &marker_indices(const std::vector<size_t> &marker_indices);
+        class line &marker_indices(vector_proxy<size_t> marker_indices);
 
         bool use_y2() const;
         class line &use_y2(bool use_y_2);
@@ -100,9 +98,7 @@ namespace matplot {
         }
 
         float marker_size() const;
-        class line &marker_size(float size);
-        class line &marker_size(const std::vector<float> &size_vector);
-        class line &marker_size(const std::vector<double> &size_vector);
+        class line &marker_size(vector_proxy<double> size_vector);
 
         bool marker_face() const;
         class line &marker_face(bool size);
@@ -130,8 +126,8 @@ namespace matplot {
             return *this;
         }
 
-        inline class line &marker_colors(const std::vector<double> &cs) {
-            marker_colors_ = cs;
+        inline class line &marker_colors(vector_proxy<double> cs) {
+            marker_colors_.assign(cs.begin(), cs.end());
             touch();
             return *this;
         }

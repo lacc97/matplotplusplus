@@ -18,18 +18,16 @@ namespace matplot {
         explicit error_bar(class axes_type *parent);
 
         /// Construct with x and y error
-        error_bar(class axes_type *parent, const std::vector<double> &x,
-                  const std::vector<double> &y,
-                  const std::vector<double> &y_neg_delta,
-                  const std::vector<double> &y_pos_delta,
-                  const std::vector<double> &x_neg_delta,
-                  const std::vector<double> &x_pos_delta,
+        error_bar(class axes_type *parent, vector_proxy<double> x,
+                  vector_proxy<double> y, vector_proxy<double> y_neg_delta,
+                  vector_proxy<double> y_pos_delta,
+                  vector_proxy<double> x_neg_delta,
+                  vector_proxy<double> x_pos_delta,
                   std::string_view line_spec = "");
 
         /// Construct with y error only
-        error_bar(class axes_type *parent, const std::vector<double> &x_data,
-                  const std::vector<double> &y_data,
-                  const std::vector<double> &error,
+        error_bar(class axes_type *parent, vector_proxy<double> x_data,
+                  vector_proxy<double> y_data, vector_proxy<double> error,
                   error_bar::type type = error_bar::type::vertical,
                   std::string_view line_spec = "");
 
@@ -50,19 +48,19 @@ namespace matplot {
       public /* methods for error_bar only */:
         const std::vector<double> &x_negative_delta() const;
         class error_bar &
-        x_negative_delta(const std::vector<double> &x_negative_delta);
+        x_negative_delta(vector_proxy<double> x_negative_delta);
 
         const std::vector<double> &x_positive_delta() const;
         class error_bar &
-        x_positive_delta(const std::vector<double> &x_positive_delta);
+        x_positive_delta(vector_proxy<double> x_positive_delta);
 
         const std::vector<double> &y_negative_delta() const;
         class error_bar &
-        y_negative_delta(const std::vector<double> &y_negative_delta);
+        y_negative_delta(vector_proxy<double> y_negative_delta);
 
         const std::vector<double> &y_positive_delta() const;
         class error_bar &
-        y_positive_delta(const std::vector<double> &y_positive_delta);
+        y_positive_delta(vector_proxy<double> y_positive_delta);
 
         float filled_curve_alpha() const;
         class error_bar &filled_curve_alpha(float filled_curve_alpha);
